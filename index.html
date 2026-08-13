@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>내집마련 예산 계산기</title>
 <meta name="description" content="종잣돈·소득 입력만으로 정책대출 자격, 감당가능 대출액, LTV·매매가 한도, 최종 예산과 DSR까지 한 번에 계산하는 내집마련 예산 계산기" />
+<meta name="theme-color" content="#16213e" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏠</text></svg>" />
 <link rel="stylesheet" href="style.css" />
 </head>
@@ -123,9 +124,10 @@
   <!-- 5단계 -->
   <section class="card">
     <h2><span class="step-no">5단계</span> 규제지역별 대출가능액 확인하기 (LTV 적용)</h2>
+    <p class="hint">아래 표는 <b>규제지역</b>(서울 전역 등)과 <b>비규제지역</b> 두 시나리오를 비교합니다. 비규제지역이라도 수도권(서울·경기·인천)이면 수도권 대출 규제(주담대 최대 6억 한도 등)가 똑같이 적용되므로, 보고 있는 비규제지역이 어디인지에 따라 아래를 선택하세요.</p>
     <label class="inline-check" id="metroWrap">
       <input type="checkbox" id="isMetro" checked>
-      비규제지역도 수도권입니다 (수도권 주담대 최대한도 적용)
+      비규제지역 시나리오의 위치가 수도권입니다 <small style="display:inline;font-weight:400">(체크 해제 = 지방: 수도권 한도 미적용)</small>
     </label>
     <div class="table-scroll"><table id="step5Table"></table></div>
     <p class="note" id="step5Note"></p>
