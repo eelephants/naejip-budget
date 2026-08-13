@@ -1,0 +1,10 @@
+{
+  "name": "naejip-budget",
+  "private": true,
+  "version": "1.1.0",
+  "description": "내집마련 예산 계산기 — 규제 룰셋을 날짜 키 데이터로 분리한 순수 함수 계산 엔진",
+  "scripts": {
+    "test": "node --test 'tests/*.test.mjs'",
+    "golden:update": "node tests/gen-golden.mjs"
+  }
+}
