@@ -18,7 +18,8 @@
     "@granite-js/plugin-hermes": "1.0.42",
     "@granite-js/plugin-router": "1.0.42",
     "@types/react": "19.2.0",
-    "babel-preset-granite": "1.0.42"
+    "babel-preset-granite": "1.0.42",
+    "typescript": "~6.0.3"
   },
   "scripts": {
     "dev": "granite dev",
