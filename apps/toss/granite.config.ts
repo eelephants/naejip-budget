@@ -15,8 +15,10 @@ export default defineConfig({
       // 계산기라 카메라·위치 등 네이티브 권한이 필요 없다.
       permissions: [],
       brand: {
-        displayName: "내집마련 예산 계산기",
-        // TODO: 앱인토스 콘솔에 아이콘을 업로드하고 발급된 URL로 교체
+        // 콘솔 '앱 정보'에 등록한 한국어 앱 이름과 같아야 한다.
+        // 비게임 출시 가이드: 내비게이션 바 중앙에 등록한 미니앱 이름(국문)이 표시돼야 함.
+        displayName: "내집예산",
+        // TODO: 앱인토스 콘솔에 아이콘을 업로드하고 발급된 URL로 교체 (현재는 placeholder라 로고가 표시되지 않음)
         icon: "https://static.toss.im/appsintoss/placeholder.png",
         primaryColor: "#2f6bff",
       },

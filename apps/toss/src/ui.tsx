@@ -7,7 +7,7 @@
  */
 import type { ReactNode } from "react";
 import { StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { fmt, parseMan } from "@naejip/core";
+import { fmt, parseMan } from "./core";
 
 export const C = {
   bg: "#f6f7fb",

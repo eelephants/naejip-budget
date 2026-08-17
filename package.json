@@ -5,19 +5,21 @@
   "description": "내집마련 예산 계산기 — 규제 룰셋을 날짜 키 데이터로 분리한 순수 함수 계산 엔진 (웹 + 앱 모노레포)",
   "workspaces": [
     "packages/*",
-    "apps/*"
+    "apps/mobile",
+    "apps/web"
   ],
   "scripts": {
     "test": "npm test --workspace=@naejip/core",
     "golden:update": "npm run golden:update --workspace=@naejip/core",
-    "typecheck": "npm run typecheck --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present && npm --prefix apps/toss run typecheck",
     "build:web": "npm run build --workspace=@naejip/web",
     "web": "npm run build:web && open apps/web/dist/index.html",
     "app": "npm start --workspace=@naejip/mobile",
     "app:ios": "npm run ios --workspace=@naejip/mobile",
     "app:android": "npm run android --workspace=@naejip/mobile",
-    "toss": "npm run dev --workspace=@naejip/toss",
-    "toss:build": "npm run build --workspace=@naejip/toss"
+    "toss": "npm --prefix apps/toss run dev",
+    "toss:build": "npm --prefix apps/toss run build",
+    "toss:deploy": "npm --prefix apps/toss run deploy"
   },
   "devDependencies": {
     "@types/node": "^26.2.0",
