@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "npm install --include-workspace-root --workspace=@naejip/web",
   "buildCommand": "npm run build:web",
-  "outputDirectory": "dist",
-  "installCommand": "echo '정적 사이트 — 의존성 설치 불필요'"
+  "outputDirectory": "apps/web/dist"
 }

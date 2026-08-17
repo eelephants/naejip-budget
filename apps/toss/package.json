@@ -1,0 +1,29 @@
+{
+  "name": "@naejip/toss",
+  "private": true,
+  "version": "1.1.0",
+  "description": "내집마련 예산 계산기 — 앱인토스 미니앱 (Granite)",
+  "dependencies": {
+    "@apps-in-toss/framework": "2.10.10",
+    "@granite-js/native": "1.0.42",
+    "@granite-js/react-native": "1.0.42",
+    "@naejip/core": "*",
+    "@toss/tds-react-native": "2.0.5",
+    "brick-module": "0.5.1",
+    "react": "19.2.3",
+    "react-native": "0.84.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.28.5",
+    "@babel/runtime": "7.28.4",
+    "@granite-js/plugin-hermes": "1.0.42",
+    "@granite-js/plugin-router": "1.0.42",
+    "@types/react": "19.2.0",
+    "babel-preset-granite": "1.0.42"
+  },
+  "scripts": {
+    "dev": "granite dev",
+    "build": "granite build",
+    "typecheck": "tsc --noEmit"
+  }
+}

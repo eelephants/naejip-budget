@@ -1,4 +1,5 @@
 /* 화면 조각들 — 색상은 웹(style.css)의 팔레트와 동일하게 맞췄다. */
+import type { ReactNode } from "react";
 import { StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { fmt, parseMan } from "@naejip/core";
 
@@ -15,9 +16,16 @@ export const C = {
   bad: "#dc2626",
   chip: "#eef2ff",
   header: "#16213e",
-};
+} as const;
 
-export function Card({ step, title, hint, children }) {
+interface CardProps {
+  step?: string;
+  title: string;
+  hint?: string;
+  children?: ReactNode;
+}
+
+export function Card({ step, title, hint, children }: CardProps) {
   return (
     <View style={s.card}>
       <View style={s.cardHead}>
@@ -34,8 +42,15 @@ export function Card({ step, title, hint, children }) {
   );
 }
 
+interface TextFieldProps {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  note?: string;
+}
+
 /* 만원 단위 입력 — 아래에 "= 1억 9,000만원"으로 환산해 보여준다. */
-export function MoneyField({ label, value, onChange, note }) {
+export function MoneyField({ label, value, onChange, note }: TextFieldProps) {
   const won = parseMan(value);
   return (
     <View style={s.field}>
@@ -58,7 +73,7 @@ export function MoneyField({ label, value, onChange, note }) {
   );
 }
 
-export function NumField({ label, value, onChange, unit, note }) {
+export function NumField({ label, value, onChange, unit, note }: TextFieldProps & { unit?: string }) {
   return (
     <View style={s.field}>
       <Text style={s.label}>{label}</Text>
@@ -79,16 +94,31 @@ export function NumField({ label, value, onChange, unit, note }) {
   );
 }
 
+interface BoolFieldProps {
+  label: string;
+  value: boolean;
+  onChange: (value: boolean) => void;
+  note?: string;
+}
+
 /* Y/N 두 칸 세그먼트 — 웹의 select를 모바일에서 한 번에 누를 수 있게 바꿨다. */
-export function YesNo({ label, value, onChange, yes = "Y", no = "N", note }) {
+export function YesNo({
+  label,
+  value,
+  onChange,
+  yes = "Y",
+  no = "N",
+  note,
+}: BoolFieldProps & { yes?: string; no?: string }) {
+  const options: ReadonlyArray<[boolean, string]> = [
+    [true, yes],
+    [false, no],
+  ];
   return (
     <View style={s.field}>
       <Text style={s.label}>{label}</Text>
       <View style={s.segment}>
-        {[
-          [true, yes],
-          [false, no],
-        ].map(([v, txt]) => {
+        {options.map(([v, txt]) => {
           const on = value === v;
           return (
             <TouchableOpacity
@@ -108,7 +138,7 @@ export function YesNo({ label, value, onChange, yes = "Y", no = "N", note }) {
   );
 }
 
-export function Check({ label, value, onChange, note }) {
+export function Check({ label, value, onChange, note }: BoolFieldProps) {
   return (
     <View style={s.checkRow}>
       <Switch
@@ -125,7 +155,7 @@ export function Check({ label, value, onChange, note }) {
   );
 }
 
-export function Badge({ ok, label }) {
+export function Badge({ ok, label }: { ok: boolean; label: string }) {
   return (
     <View style={[s.badge, ok ? s.badgeY : s.badgeN]}>
       <Text style={[s.badgeTxt, ok ? s.badgeTxtY : s.badgeTxtN]}>
@@ -135,11 +165,21 @@ export function Badge({ ok, label }) {
   );
 }
 
-export function Row({ label, value, strong, color }) {
+export function Row({
+  label,
+  value,
+  strong,
+  color,
+}: {
+  label: string;
+  value: string;
+  strong?: boolean;
+  color?: string;
+}) {
   return (
     <View style={s.row}>
       <Text style={s.rowLabel}>{label}</Text>
-      <Text style={[s.rowValue, strong && s.rowValueStrong, color && { color }]}>{value}</Text>
+      <Text style={[s.rowValue, strong && s.rowValueStrong, color ? { color } : null]}>{value}</Text>
     </View>
   );
 }
