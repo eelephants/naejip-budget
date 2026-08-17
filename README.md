@@ -52,7 +52,8 @@ npm run web           # 웹 빌드 후 브라우저로 열기
 npm run app:ios       # 스토어 앱을 iOS 시뮬레이터에서 실행
 npm run app:android   # 스토어 앱을 Android 에뮬레이터에서 실행
 npm run toss          # 앱인토스 미니앱 개발 서버 (토스 샌드박스 앱에서 intoss://naejip-budget)
-npm run toss:build    # 앱인토스 번들 빌드
+npm run toss:build    # 업로드용 아티팩트 생성 → apps/toss/naejip-budget.ait
+npm run toss:deploy   # .ait를 콘솔에 CLI로 업로드 (API 키 필요)
 
 npm run typecheck     # 워크스페이스 전체 타입체크
 npm test              # 계산 엔진 테스트
@@ -75,14 +76,83 @@ npm run golden:update # 의도된 변경 시 골든 스냅샷 재생성 (diff �
   한정했으므로(`--workspace=@naejip/web`) Expo·Granite 의존성은 설치조차 하지 않고,
   앱 쪽 변경이 웹 배포를 깨뜨릴 수 없습니다.
 - **스토어 앱**: Expo. 배포는 EAS Build(`eas build`) 사용.
-- **앱인토스 미니앱**: `npm run toss:build` → `apps/toss/dist`에 iOS·Android 번들 생성 후
-  앱인토스 콘솔에 등록·검수. 출시 전 두 가지를 먼저 처리해야 합니다.
-  1. **정책 확인 (선행 조건)**: 현행 [서비스 오픈 정책](https://developers-apps-in-toss.toss.im/intro/guide.md)
-     5항은 "대출·보험·카드·증권 등 금융 상품 관련 서비스는 **법적 인허가 여부와 관계없이** 등록 불가"로
-     규정합니다. 대출 한도·DSR 계산이 핵심인 이 앱은 그대로는 입점이 불가할 가능성이 높으므로,
-     [채널톡](https://apps-in-toss.channel.io/) 사전 상담 결과를 받고 진행하세요.
-  2. `granite.config.ts`의 `appName`을 콘솔 등록명과 맞추고, `brand.icon`을 콘솔에서 발급된
-     아이콘 URL로 교체하세요 (현재는 placeholder).
+- **앱인토스 미니앱**: 아래 「앱인토스 출시 절차」 참고.
+
+## 앱인토스 출시 절차
+
+> [!IMPORTANT]
+> **0단계는 정책 확인입니다.** 현행 [서비스 오픈 정책](https://developers-apps-in-toss.toss.im/intro/guide.md)
+> 5항은 "대출·보험·카드·증권 등 금융 상품 관련 서비스는 **법적 인허가 여부와 관계없이** 등록 불가"로
+> 규정합니다. 대출 한도·DSR 계산이 핵심인 이 앱은 그대로는 입점이 불가할 가능성이 높으므로,
+> 아래 절차를 밟기 전에 [채널톡](https://apps-in-toss.channel.io/) 사전 상담 결과를 먼저 받으세요.
+
+### 1. 콘솔 가입과 앱 등록
+
+[앱인토스 콘솔](https://apps-in-toss.toss.im/)에서 토스 비즈니스 회원으로 가입합니다
+(만 19세 이상 + 본인 명의 토스 앱 필요). 워크스페이스는 **사업자당 1개**만 만들 수 있습니다.
+
+'앱 → +등록하기'에서 아래를 입력합니다.
+
+- **앱 이름**: 토스 앱에 노출되는 이름 (나중에 변경 가능)
+- **appName**: 진입 스킴의 ID. **한 번 등록하면 변경할 수 없습니다.**
+  이 레포는 `naejip-budget`으로 맞춰져 있으므로 (`apps/toss/granite.config.ts`)
+  같은 값으로 등록하거나, 다르게 등록했다면 설정 파일을 고치세요.
+- **앱 유형**: 비게임
+
+등록 후 `granite.config.ts`의 `brand.icon`을 콘솔에서 발급된 아이콘 URL로 교체하세요
+(현재는 placeholder).
+
+### 2. 샌드박스 앱으로 개발 테스트
+
+앱인토스는 개발용 토스 앱을 따로 주지 않고 **샌드박스 앱**을 씁니다 (iOS 16+ / Android 7+).
+
+```bash
+npm run toss    # granite dev
+```
+
+샌드박스 앱에서 `intoss://naejip-budget` 스킴으로 접속합니다. iOS 실기기는 같은 와이파이에서
+로컬 IP를, Android는 `adb reverse tcp:8081 tcp:8081`을 먼저 걸어주세요.
+
+### 3. 아티팩트 빌드
+
+```bash
+npm run toss:build   # → apps/toss/naejip-budget.ait
+```
+
+`.ait`가 콘솔에 올리는 산출물입니다. 압축 해제 기준 **100MB 이하**만 업로드됩니다
+(현재 약 2.7MB). `npm run toss:bundle`(=`granite dev`용 원시 번들)은 업로드 대상이 아닙니다.
+
+### 4. 토스 앱에서 테스트 (검토 요청의 전제 조건)
+
+콘솔에 `.ait`를 올리고 '테스트하기'를 누르면 QR이 나옵니다. QR로 실제 토스 앱에서 실행됩니다.
+QR 테스트는 **토스 로그인 + 워크스페이스 멤버 + 만 19세 이상**이어야 동작합니다.
+
+CLI 업로드도 됩니다 (콘솔 '키' 메뉴에서 API 키 발급 후):
+
+```bash
+npm run toss:deploy -- --api-key <API_KEY>
+```
+
+**테스트를 1회 이상 완료해야 '검토 요청하기' 버튼이 활성화됩니다.**
+
+### 5. 검토 요청 → 출시
+
+1. [비게임 출시 가이드](https://developers-apps-in-toss.toss.im/checklist/app-nongame.md) 체크리스트 확인
+2. 앱 정보(부제·상세 설명 등)를 모두 입력하고 검토 요청 — 앱 정보 검토는 영업일 1~2일
+3. 번들 검토는 영업일 최대 3일, 카테고리에 따라 7일 이상
+4. 승인되면 콘솔에서 '출시하기' → **전체 사용자에게 즉시 공개**
+
+반려되면 '반려 사유 보기'로 확인하고 수정한 `.ait`를 다시 올립니다. 문제가 생기면 콘솔의
+'앱 출시' 메뉴에서 이전 버전으로 **롤백**할 수 있습니다.
+
+### 참고
+
+- 이 앱은 서버 통신이 없어 CORS 설정이 필요 없습니다. 추후 API를 붙이면 Origin 허용 목록에
+  `https://naejip-budget.web.tossmini.com`(라이브)과 `https://naejip-budget.private-web.tossmini.com`(QR 테스트)을
+  등록해야 합니다.
+- 사업자등록은 출시 자체에는 필수가 아니지만, 인앱 결제·광고·토스 로그인 등 수익화·정산 기능을
+  쓰려면 필요합니다. 이 앱은 해당 기능을 쓰지 않습니다.
+- 앱인토스는 현재 만 19세 이상 사용자에게만 제공됩니다.
 
 ## 면책
 

@@ -7,7 +7,6 @@
     "@apps-in-toss/framework": "2.10.10",
     "@granite-js/native": "1.0.42",
     "@granite-js/react-native": "1.0.42",
-    "@naejip/core": "*",
     "@toss/tds-react-native": "2.0.5",
     "brick-module": "0.5.1",
     "react": "19.2.3",
@@ -23,7 +22,9 @@
   },
   "scripts": {
     "dev": "granite dev",
-    "build": "granite build",
-    "typecheck": "tsc --noEmit"
+    "build": "ait build",
+    "typecheck": "tsc --noEmit",
+    "bundle": "granite build",
+    "deploy": "ait deploy"
   }
 }
