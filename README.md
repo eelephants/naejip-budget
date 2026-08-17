@@ -16,15 +16,38 @@
 
 규제를 코드가 아닌 **날짜 키 데이터(룰셋)** 로 관리하고, 계산은 순수 함수로 분리했습니다.
 
+웹과 앱이 같은 계산 엔진을 쓰는 npm workspaces 모노레포입니다.
+
 ```
-rulesets.js   # RULESETS["2026-08"] 등 날짜 키 규제 데이터 + 지역 데이터
-calc.js       # computeBudget(input, ruleset) 순수 함수 — DOM 무의존
-app.js        # DOM 레이어 (입력 수집 → 계산 → 렌더링, 공유 링크)
-index.html    # 마크업
-tests/        # 골든 회귀 테스트 + 속성(불변식) 테스트
+packages/core/          # @naejip/core — 웹·앱 공용, 플랫폼 무의존
+  rulesets.js           #   RULESETS["2026-08"] 등 날짜 키 규제 데이터 + 지역 데이터
+  calc.js               #   computeBudget(input, ruleset) 순수 함수
+  format.js             #   fmt·pct·parseMan 등 표시 포맷
+  index.js              #   위 3개를 묶어 export (RN/Node용)
+  tests/                #   골든 회귀 테스트 + 속성(불변식) 테스트
+apps/web/               # 웹 — DOM 레이어 (입력 수집 → 계산 → 렌더링, 공유 링크)
+  index.html app.js style.css
+apps/mobile/            # 앱 — React Native (Expo SDK 57)
+  App.js                #   화면 + 입력 상태
+  src/ui.js             #   입력·카드·배지 등 화면 조각
 ```
 
-규제가 바뀌면: `rulesets.js`에 새 룰셋 추가 → `app.js`의 `ACTIVE_RULESET` 교체 → `npm test`로 기존 룰셋 회귀 확인.
+`packages/core`는 브라우저에서는 `<script>` 전역으로, RN에서는 CommonJS 모듈로 동작합니다.
+따라서 계산·포맷 로직은 한 곳에만 있고, 웹과 앱은 표시만 각자 담당합니다.
+
+규제가 바뀌면: `packages/core/rulesets.js`에 새 룰셋 추가 → `apps/web/app.js`와
+`apps/mobile/App.js`의 `ACTIVE_RULESET` 교체 → `npm test`로 기존 룰셋 회귀 확인.
+
+## 개발
+
+```bash
+npm install           # 워크스페이스 전체 설치
+
+npm run web           # 웹 빌드(dist/) 후 브라우저로 열기
+npm run app           # 앱 개발 서버 (Expo) — QR/시뮬레이터
+npm run app:ios       # 앱을 iOS 시뮬레이터에서 실행
+npm run app:android   # 앱을 Android 에뮬레이터에서 실행
+```
 
 ## 테스트
 
@@ -35,6 +58,17 @@ npm run golden:update # 의도된 변경 시 골든 스냅샷 재생성 (diff �
 
 - **골든 테스트**: 다양한 프로필 10케이스의 전체 계산 결과를 스냅샷으로 고정해 회귀 감지
 - **속성 테스트**: 결정적 PRNG로 룰셋당 300회 랜덤 탐색 — "소득↑이면 예산은 감소하지 않는다", "규제지역 예산 ≤ 비규제 예산", 시가별 한도 경계값(15억/25억), 디딤돌 소득 경계값(6,000만원) 등 불변식 검증
+
+## 배포
+
+- **웹**: Vercel. 루트 `vercel.json`이 `npm run build:web`으로 `apps/web` + `packages/core`를
+  `dist/`에 모아 정적 배포합니다. 앱 의존성을 설치하지 않으므로(`installCommand` 무효화)
+  RN 쪽 변경이 웹 배포를 깨뜨리지 않습니다.
+- **앱**: Expo. 스토어 배포는 EAS Build(`eas build`) 사용.
+- **앱인토스(토스 미니앱)**: 현행 [서비스 오픈 정책](https://developers-apps-in-toss.toss.im/intro/guide.md)
+  5항이 "대출·보험·카드·증권 등 금융 상품 관련 서비스는 **법적 인허가 여부와 관계없이** 등록 불가"로
+  규정하고 있어, 이 계산기는 그대로는 입점이 어렵습니다. 또한 토스 미니앱은 Expo가 아닌
+  자체 프레임워크(Granite, `@apps-in-toss/framework`)를 쓰므로 별도 앱이 필요합니다.
 
 ## 면책
 

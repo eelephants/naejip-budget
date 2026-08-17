@@ -2,9 +2,18 @@
   "name": "naejip-budget",
   "private": true,
   "version": "1.1.0",
-  "description": "내집마련 예산 계산기 — 규제 룰셋을 날짜 키 데이터로 분리한 순수 함수 계산 엔진",
+  "description": "내집마련 예산 계산기 — 규제 룰셋을 날짜 키 데이터로 분리한 순수 함수 계산 엔진 (웹 + 앱 모노레포)",
+  "workspaces": [
+    "packages/*",
+    "apps/mobile"
+  ],
   "scripts": {
-    "test": "node --test 'tests/*.test.mjs'",
-    "golden:update": "node tests/gen-golden.mjs"
+    "test": "npm test --workspace=@naejip/core",
+    "golden:update": "npm run golden:update --workspace=@naejip/core",
+    "build:web": "rm -rf dist && mkdir -p dist && cp apps/web/index.html apps/web/app.js apps/web/style.css packages/core/rulesets.js packages/core/calc.js packages/core/format.js dist/",
+    "web": "npm run build:web && open dist/index.html",
+    "app": "npm start --workspace=@naejip/mobile",
+    "app:ios": "npm run ios --workspace=@naejip/mobile",
+    "app:android": "npm run android --workspace=@naejip/mobile"
   }
 }
