@@ -1,9 +1,11 @@
 /* 골든 테스트 케이스 10개 — 금액은 모두 원 단위 */
 
+import type { BudgetInput, RulesetId } from "../src/index.ts";
+
 const MAN = 10_000;
 const EOK = 100_000_000;
 
-const base = {
+const base: BudgetInput = {
   seed: 1.9 * EOK,
   gross: 8445 * MAN,
   net: 7488 * MAN,
@@ -27,7 +29,13 @@ const base = {
   existingDebtMonthly: 0,
 };
 
-export const CASES = [
+export interface Case {
+  id: string;
+  ruleset: RulesetId;
+  input: BudgetInput;
+}
+
+export const CASES: Case[] = [
   { id: "01-legacy-excel-example", ruleset: "2024-07", input: { ...base } },
   { id: "02-current-same-profile", ruleset: "2026-08", input: { ...base } },
   {

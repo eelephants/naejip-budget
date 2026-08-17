@@ -1,0 +1,14 @@
+{
+  "name": "@naejip/web",
+  "private": true,
+  "version": "1.1.0",
+  "description": "내집마련 예산 계산기 — 웹 (정적 사이트)",
+  "type": "module",
+  "dependencies": {
+    "@naejip/core": "*"
+  },
+  "scripts": {
+    "build": "rm -rf dist && mkdir -p dist && esbuild src/app.ts --bundle --format=iife --target=es2020 --outfile=dist/app.js && cp index.html style.css dist/",
+    "typecheck": "tsc --noEmit"
+  }
+}

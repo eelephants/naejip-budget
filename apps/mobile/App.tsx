@@ -1,6 +1,6 @@
 /* =========================================================
  * 내집마련 예산 계산기 — 모바일 화면
- * 계산은 @naejip/core의 computeBudget(input, ruleset) 순수 함수를 웹과 공유한다.
+ * 계산·룰셋·폼 모델은 @naejip/core를 웹·앱이 공유한다.
  * 이 파일은 입력 상태와 표시만 담당한다.
  * ========================================================= */
 
@@ -9,48 +9,22 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import {
+  DEFAULT_FORM,
   LOAN_LABEL,
   REGION_LABEL,
   RULESETS,
   computeBudget,
   fmt,
   fmtWonExact,
-  parseMan,
-  parseNum,
   pct,
+  toBudgetInput,
 } from "@naejip/core";
+import type { BudgetResult, FormState, RegionKey, RulesetId } from "@naejip/core";
 import { Badge, C, Card, Check, MoneyField, NumField, Row, YesNo } from "./src/ui";
 
-const ACTIVE_RULESET = "2026-08"; // 규제 변경 시 코어에 새 룰셋 추가 후 이 키만 교체
+const ACTIVE_RULESET: RulesetId = "2026-08"; // 규제 변경 시 코어에 새 룰셋 추가 후 이 키만 교체
 
-const DEFAULTS = {
-  seedSelf: "0",
-  seedSpouse: "0",
-  grossSelf: "0",
-  grossSpouse: "0",
-  netSelf: "0",
-  netSpouse: "0",
-  netWorth: "0",
-  houses: "0",
-  firstTime: false,
-  newlywed: false,
-  children: "0",
-  bornAfter23: false,
-  livingCost: "0",
-  loanRate: "4.0",
-  loanYears: "30",
-  isMetro: true,
-  priceReg: "0",
-  priceNon: "0",
-  costRate: "2.0",
-  dsrRate: "4.5",
-  dsrYears: "30",
-  creditRate: "6.0",
-  existingDebt: "0",
-  useStress: true,
-};
-
-const REGIONS = ["reg", "non"];
+const REGIONS: readonly RegionKey[] = ["reg", "non"];
 
 export default function App() {
   return (
@@ -61,41 +35,18 @@ export default function App() {
 }
 
 function Screen() {
-  const [f, setF] = useState(DEFAULTS);
+  const [f, setF] = useState<FormState>(DEFAULT_FORM);
   const insets = useSafeAreaInsets();
-  const set = (key) => (value) => setF((prev) => ({ ...prev, [key]: value }));
+
+  /* 계산된 키로 스프레드하면 TS가 넓은 타입으로 추론하므로 여기서만 좁혀준다. */
+  const set =
+    <K extends keyof FormState>(key: K) =>
+    (value: FormState[K]): void => {
+      setF((prev) => ({ ...prev, [key]: value }) as FormState);
+    };
 
   const R = RULESETS[ACTIVE_RULESET];
-  const res = useMemo(
-    () =>
-      computeBudget(
-        {
-          seed: parseMan(f.seedSelf) + parseMan(f.seedSpouse),
-          gross: parseMan(f.grossSelf) + parseMan(f.grossSpouse),
-          net: parseMan(f.netSelf) + parseMan(f.netSpouse),
-          netWorth: parseMan(f.netWorth),
-          houses: parseNum(f.houses),
-          firstTime: f.firstTime,
-          newlywed: f.newlywed,
-          children: parseNum(f.children),
-          bornAfter23: f.bornAfter23,
-          living: parseMan(f.livingCost),
-          loanRate: parseNum(f.loanRate),
-          loanYears: parseNum(f.loanYears),
-          isMetro: f.isMetro,
-          priceReg: parseMan(f.priceReg),
-          priceNon: parseMan(f.priceNon),
-          costRate: parseNum(f.costRate),
-          dsrRate: parseNum(f.dsrRate),
-          dsrYears: parseNum(f.dsrYears),
-          creditRate: parseNum(f.creditRate),
-          useStress: f.useStress,
-          existingDebtMonthly: parseMan(f.existingDebt),
-        },
-        R
-      ),
-    [f, R]
-  );
+  const res = useMemo(() => computeBudget(toBudgetInput(f), R), [f, R]);
 
   return (
     <View style={s.root}>
@@ -287,7 +238,7 @@ function Screen() {
   );
 }
 
-function ResultCard({ region, res }) {
+function ResultCard({ region, res }: { region: RegionKey; res: BudgetResult }) {
   const s8 = res.s8[region];
   const dsr = res.dsr[region];
   const isPolicyApplied = dsr.appliedType !== "general";

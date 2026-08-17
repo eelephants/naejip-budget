@@ -1,31 +1,27 @@
 /* 속성(불변식) 테스트 — 계단식 한도 로직의 경계값 버그를 랜덤 탐색으로 잡는다 */
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createRequire } from "node:module";
-import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
-
-const require = createRequire(import.meta.url);
-const dir = dirname(fileURLToPath(import.meta.url));
-const { RULESETS } = require(join(dir, "..", "rulesets.js"));
-const { computeBudget } = require(join(dir, "..", "calc.js"));
+import { RULESETS, computeBudget } from "../src/index.ts";
+import type { BudgetInput, RegionKey, Ruleset, RulesetId } from "../src/index.ts";
 
 const MAN = 10_000;
 const EOK = 100_000_000;
 const ITER = 300;
 const EPS = 1e-6;
+const SIDES: readonly RegionKey[] = ["reg", "non"];
 
 /* 결정적 PRNG (mulberry32) — 실패 재현 가능 */
-function mulberry32(seed) {
+function mulberry32(seed: number): () => number {
   return function () {
-    seed |= 0; seed = (seed + 0x6d2b79f5) | 0;
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
     let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
 
-function randomInput(rnd) {
+function randomInput(rnd: () => number): BudgetInput {
   const gross = Math.round((0.2 + rnd() * 2.3) * EOK); // 2천 ~ 2.5억
   return {
     seed: Math.round(rnd() * 10 * EOK),
@@ -52,8 +48,8 @@ function randomInput(rnd) {
   };
 }
 
-const eachRuleset = (fn) => {
-  for (const id of Object.keys(RULESETS)) fn(RULESETS[id], id);
+const eachRuleset = (fn: (R: Ruleset, id: RulesetId) => void): void => {
+  for (const id of Object.keys(RULESETS) as RulesetId[]) fn(RULESETS[id], id);
 };
 
 test("P1: 세후소득 증가 → 최종 예산은 감소하지 않는다 (자격 불변 조건)", () => {
@@ -61,10 +57,10 @@ test("P1: 세후소득 증가 → 최종 예산은 감소하지 않는다 (자�
     const rnd = mulberry32(11 + id.length);
     for (let i = 0; i < ITER; i++) {
       const a = randomInput(rnd);
-      const b = { ...a, net: a.net + Math.round((10 + rnd() * 200) * MAN) * 12 };
+      const b: BudgetInput = { ...a, net: a.net + Math.round((10 + rnd() * 200) * MAN) * 12 };
       const ra = computeBudget(a, R);
       const rb = computeBudget(b, R);
-      for (const k of ["reg", "non"]) {
+      for (const k of SIDES) {
         assert.ok(
           rb.s8[k].budget >= ra.s8[k].budget - EPS,
           `[${id}] iter=${i} region=${k}: net↑인데 budget↓ (${ra.s8[k].budget} → ${rb.s8[k].budget})\ninput=${JSON.stringify(a)}`
@@ -94,10 +90,10 @@ test("P3: 종잣돈 증가 → 최종 예산은 감소하지 않는다", () => {
     const rnd = mulberry32(37);
     for (let i = 0; i < ITER; i++) {
       const a = randomInput(rnd);
-      const b = { ...a, seed: a.seed + Math.round(rnd() * 2 * EOK) };
+      const b: BudgetInput = { ...a, seed: a.seed + Math.round(rnd() * 2 * EOK) };
       const ra = computeBudget(a, R);
       const rb = computeBudget(b, R);
-      for (const k of ["reg", "non"]) {
+      for (const k of SIDES) {
         assert.ok(
           rb.s8[k].budget >= ra.s8[k].budget - EPS,
           `[${id}] iter=${i} region=${k}: seed↑인데 budget↓\ninput=${JSON.stringify(a)}`
@@ -113,7 +109,7 @@ test("P4: 대출액·예산은 음수/NaN이 없고, 예산 = 가용종잣돈 + 
     for (let i = 0; i < ITER; i++) {
       const a = randomInput(rnd);
       const r = computeBudget(a, R);
-      for (const k of ["reg", "non"]) {
+      for (const k of SIDES) {
         const s = r.s8[k];
         assert.ok(s.loan >= 0 && Number.isFinite(s.loan), `[${id}] loan invalid: ${s.loan}`);
         assert.ok(Number.isFinite(s.budget), `[${id}] budget invalid`);
@@ -125,7 +121,7 @@ test("P4: 대출액·예산은 음수/NaN이 없고, 예산 = 가용종잣돈 + 
 });
 
 test("P5: 디딤돌 소득 경계값 (단독가구 6,000만원)", () => {
-  const base = {
+  const base: Omit<BudgetInput, "gross"> = {
     seed: 2 * EOK, netWorth: 2 * EOK, houses: 0,
     firstTime: false, newlywed: false, children: 0, bornAfter23: false,
     net: 5000 * MAN, living: 200 * MAN, loanRate: 4, loanYears: 30, isMetro: true,
@@ -140,7 +136,7 @@ test("P5: 디딤돌 소득 경계값 (단독가구 6,000만원)", () => {
 
 test("P6: 현행 주담대 시가별 절대한도 (6억/4억/2억)", () => {
   const R = RULESETS["2026-08"];
-  const base = {
+  const base: Omit<BudgetInput, "priceReg"> = {
     seed: 12 * EOK, netWorth: 12 * EOK, houses: 0,
     firstTime: false, newlywed: false, children: 0, bornAfter23: false,
     gross: 3 * EOK, net: 2.4 * EOK, living: 200 * MAN, loanRate: 4, loanYears: 30, isMetro: true,
@@ -148,16 +144,16 @@ test("P6: 현행 주담대 시가별 절대한도 (6억/4억/2억)", () => {
     priceNon: EOK,
   };
   // 소득·LTV 여유가 충분한 프로필에서 절대한도가 상한이 되는지 확인 (규제지역 LTV 40%)
-  const at = (p) => computeBudget({ ...base, priceReg: p }, R).s8.reg.loan;
+  const at = (p: number): number => computeBudget({ ...base, priceReg: p }, R).s8.reg.loan;
   assert.equal(at(14 * EOK), Math.min(14 * EOK * 0.4, 6 * EOK)); // 5.6억 (LTV가 먼저 걸림)
-  assert.equal(at(15 * EOK), 6 * EOK);                            // 6억 캡
-  assert.equal(at(20 * EOK), 4 * EOK);                            // 4억 캡
-  assert.equal(at(26 * EOK), 2 * EOK);                            // 2억 캡
+  assert.equal(at(15 * EOK), 6 * EOK); // 6억 캡
+  assert.equal(at(20 * EOK), 4 * EOK); // 4억 캡
+  assert.equal(at(26 * EOK), 2 * EOK); // 2억 캡
 });
 
 test("P7: 현행 2주택 이상은 규제지역·수도권 대출 0", () => {
   const R = RULESETS["2026-08"];
-  const input = {
+  const input: BudgetInput = {
     seed: 5 * EOK, netWorth: 5 * EOK, houses: 2,
     firstTime: false, newlywed: false, children: 0, bornAfter23: false,
     gross: 1.5 * EOK, net: 1.2 * EOK, living: 200 * MAN, loanRate: 4, loanYears: 30, isMetro: true,
