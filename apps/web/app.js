@@ -1,17 +1,10 @@
 /* =========================================================
  * DOM 레이어 — 입력 수집 → computeBudget(input, ruleset) → 렌더링
- * 계산 로직은 calc.js, 규제 데이터는 rulesets.js 참조.
+ * 계산 로직은 calc.js, 규제 데이터는 rulesets.js,
+ * 표시 포맷(fmt·pct·LOAN_LABEL 등)은 format.js 참조. 모두 @naejip/core.
  * ========================================================= */
 
-const MAN = 10_000;
 const EOK2 = 100_000_000;
-
-const LOAN_LABEL = {
-  newborn: "신생아특례대출",
-  didim: "디딤돌대출",
-  bogeum: "기존보금자리론",
-  general: "일반대출",
-};
 
 const ACTIVE_RULESET = "2026-08"; // 규제 변경 시 rulesets.js에 새 룰셋 추가 후 이 키만 교체
 
@@ -19,31 +12,10 @@ const ACTIVE_RULESET = "2026-08"; // 규제 변경 시 rulesets.js에 새 룰셋
 const $ = (id) => document.getElementById(id);
 
 function parseMoney(el) {
-  const n = parseFloat(String(el.value).replace(/[^\d.]/g, ""));
-  return (isNaN(n) ? 0 : n) * MAN;
+  return parseMan(el.value);
 }
 function num(el) {
-  const n = parseFloat(el.value);
-  return isNaN(n) ? 0 : n;
-}
-function fmt(v) {
-  if (v === Infinity) return "한도없음";
-  if (v == null || isNaN(v)) return "-";
-  const neg = v < 0;
-  v = Math.abs(Math.round(v));
-  const eok = Math.floor(v / EOK2);
-  const man = Math.round((v - eok * EOK2) / MAN);
-  let s = "";
-  if (eok) s += eok.toLocaleString() + "억";
-  if (man) s += (s ? " " : "") + man.toLocaleString() + "만";
-  if (!s) s = "0";
-  return (neg ? "-" : "") + s + "원";
-}
-function fmtWonExact(v) {
-  return Math.round(v).toLocaleString() + "원";
-}
-function pct(x, d = 1) {
-  return (x * 100).toFixed(d) + "%";
+  return parseNum(el.value);
 }
 
 /* ---------- input collection ---------- */
@@ -155,7 +127,7 @@ function render() {
       : "현재 자격에 해당하는 대출 기준으로 한도를 적용했습니다.";
 
   // 5단계
-  const regionName = { reg: "규제지역", non: "비규제지역" };
+  const regionName = REGION_LABEL;
   const s5row = (k) => {
     const s = res.s5[k];
     const partTxt = s.parts ? `<br><small>디딤돌 ${fmt(s.parts.d)} + 보금자리 ${fmt(s.parts.e)}</small>` : "";
@@ -283,7 +255,7 @@ function loadFromQuery() {
     if (p.has(id)) {
       const el = $(id);
       const v = p.get(id);
-      el.value = el.hasAttribute("data-money") ? Number(v).toLocaleString() : v;
+      el.value = el.hasAttribute("data-money") ? comma(Number(v)) : v;
     }
   });
   if (p.has("metro")) $("isMetro").checked = p.get("metro") === "1";
@@ -313,7 +285,7 @@ function attachMoneyInputs() {
     };
     el.addEventListener("blur", () => {
       const n = parseFloat(String(el.value).replace(/[^\d.]/g, ""));
-      el.value = isNaN(n) ? "0" : Math.round(n).toLocaleString();
+      el.value = isNaN(n) ? "0" : comma(Math.round(n));
       update();
     });
     el.addEventListener("input", update);
