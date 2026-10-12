@@ -12,6 +12,8 @@ export type LoanType = "newborn" | "didim" | "bogeum" | "general";
 export interface BudgetInput {
   seed: number;
   gross: number;
+  /** 맞벌이 부부 중 낮은 쪽 연소득 (결혼페널티 완화 판정용). 외벌이·단독이면 생략 → gross */
+  grossLower?: number;
   net: number;
   netWorth: number;
   houses: number;
@@ -73,6 +75,9 @@ export interface DsrCheck {
   credit: number;
   cPmt: number;
   existing: number;
+  /** 스트레스 가산 반영 주담대·신용대출 적용금리(%) */
+  rate: number;
+  creditRate: number;
   tot: number;
   monthlyGross: number;
   ratio: number;
@@ -117,10 +122,11 @@ export interface BudgetResult {
   s6: ByRegion<Step6>;
   s8: ByRegion<Step8>;
   dsr: ByRegion<DsrCheck>;
-  dsrRateEff: number;
-  creditRateEff: number;
   stressOn: boolean;
 }
+
+/** 결혼페널티 판정용 낮은 쪽 소득 — 맞벌이(둘 다 소득 有)만 대상, 외벌이·단독은 합산 그대로 */
+export const lowerEarner = (a: number, b: number): number => (a > 0 && b > 0 ? Math.min(a, b) : a + b);
 
 function pmt(monthlyRate: number, months: number, principal: number): number {
   if (principal <= 0) return 0;
@@ -150,7 +156,8 @@ export function computeBudget(input: BudgetInput, R: Ruleset): BudgetResult {
       (input.children >= 3 && gross <= 1.0 * EOK) ||
       (input.children === 2 && gross <= 0.9 * EOK) ||
       (input.newlywed && gross <= 0.85 * EOK) ||
-      (input.children === 1 && gross <= 0.8 * EOK));
+      (input.children === 1 && gross <= 0.8 * EOK) ||
+      (input.newlywed && R.bogeumSpouseMax !== null && (input.grossLower ?? gross) <= R.bogeumSpouseMax));
 
   const loanType: LoanType = newbornOK ? "newborn" : didimOK ? "didim" : bogeumOK ? "bogeum" : "general";
   const isPolicy = loanType === "newborn" || loanType === "didim";
@@ -287,16 +294,17 @@ export function computeBudget(input: BudgetInput, R: Ruleset): BudgetResult {
     };
   }
 
-  /* ---- DSR 점검 (기존부채 포함, 스트레스 금리는 주담대·신용대출 공통 가산) ---- */
-  const stressOn = !!input.useStress && R.stressAdd > 0;
-  const dsrRateEff = input.dsrRate + (stressOn ? R.stressAdd : 0);
-  const creditRateEff = input.creditRate + (stressOn ? R.stressAdd : 0);
+  /* ---- DSR 점검 (기존부채 포함, 스트레스 금리는 지역·대출종류별 가산) ---- */
+  const stressOn = !!input.useStress && R.stress.metro > 0;
 
   function dsrCheck(region: RegionKey): DsrCheck {
     const s8 = step8(region);
-    const mPmt = pmt(dsrRateEff / 100 / 12, input.dsrYears * 12, s8.loan);
     const credit = s8.shortfall;
-    const cPmt = (credit / 5 + credit * (creditRateEff / 100)) / 12;
+    const metroOrReg = region === "reg" || isMetro;
+    const rate = input.dsrRate + (stressOn ? (metroOrReg ? R.stress.metro : R.stress.local) : 0);
+    const creditRate = input.creditRate + (stressOn && credit > R.stress.creditMin ? R.stress.credit : 0);
+    const mPmt = pmt(rate / 100 / 12, input.dsrYears * 12, s8.loan);
+    const cPmt = (credit / 5 + credit * (creditRate / 100)) / 12;
     const tot = mPmt + cPmt + input.existingDebtMonthly;
     const monthlyGross = gross / 12;
     const ratio = monthlyGross > 0 ? tot / monthlyGross : 0;
@@ -308,6 +316,8 @@ export function computeBudget(input: BudgetInput, R: Ruleset): BudgetResult {
       credit,
       cPmt,
       existing: input.existingDebtMonthly,
+      rate,
+      creditRate,
       tot,
       monthlyGross,
       ratio,
@@ -351,8 +361,6 @@ export function computeBudget(input: BudgetInput, R: Ruleset): BudgetResult {
     s6: { reg: step6("reg"), non: step6("non") },
     s8: { reg: step8("reg"), non: step8("non") },
     dsr: { reg: dsrCheck("reg"), non: dsrCheck("non") },
-    dsrRateEff,
-    creditRateEff,
     stressOn,
   };
 }

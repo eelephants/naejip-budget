@@ -114,6 +114,8 @@
     "credit": 328000000,
     "cPmt": 7106666.666666667,
     "existing": 0,
+    "rate": 4.5,
+    "creditRate": 6,
     "tot": 9640093.215796096,
     "monthlyGross": 7037500,
     "ratio": 1.3698178637010439,
@@ -127,14 +129,14 @@
     "credit": 319200000,
     "cPmt": 6916000,
     "existing": 0,
+    "rate": 4.5,
+    "creditRate": 6,
     "tot": 9494014.856394107,
     "monthlyGross": 7037500,
     "ratio": 1.3490607255977416,
     "pass": false
    }
   },
-  "dsrRateEff": 4.5,
-  "creditRateEff": 6,
   "stressOn": false
  },
  "02-current-same-profile": {
@@ -252,6 +254,8 @@
     "credit": 428000000,
     "cPmt": 9808333.333333334,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 7.5,
     "tot": 12206535.433944361,
     "monthlyGross": 7037500,
     "ratio": 1.734498818322467,
@@ -265,14 +269,14 @@
     "credit": 319200000,
     "cPmt": 7315000,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 7.5,
     "tot": 10365513.071977228,
     "monthlyGross": 7037500,
     "ratio": 1.472897061737439,
     "pass": false
    }
   },
-  "dsrRateEff": 6,
-  "creditRateEff": 7.5,
   "stressOn": true
  },
  "03-current-newborn": {
@@ -378,6 +382,8 @@
     "credit": 224000000,
     "cPmt": 5133333.333333333,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 7.5,
     "tot": 7531535.433944361,
     "monthlyGross": 10000000,
     "ratio": 0.7531535433944361,
@@ -391,14 +397,14 @@
     "credit": 224000000,
     "cPmt": 5133333.333333333,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 7.5,
     "tot": 7531535.433944361,
     "monthlyGross": 10000000,
     "ratio": 0.7531535433944361,
     "pass": false
    }
   },
-  "dsrRateEff": 6,
-  "creditRateEff": 7.5,
   "stressOn": true
  },
  "04-current-bogeum-3kids": {
@@ -504,6 +510,8 @@
     "credit": 0,
     "cPmt": 0,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 6,
     "tot": 2308269.5218381146,
     "monthlyGross": 7916666.666666667,
     "ratio": 0.291570886969025,
@@ -517,14 +525,14 @@
     "credit": 0,
     "cPmt": 0,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 6,
     "tot": 2308269.5218381146,
     "monthlyGross": 7916666.666666667,
     "ratio": 0.291570886969025,
     "pass": true
    }
   },
-  "dsrRateEff": 6,
-  "creditRateEff": 7.5,
   "stressOn": true
  },
  "05-current-general-high-income": {
@@ -630,6 +638,8 @@
     "credit": 344000000,
     "cPmt": 7883333.333333333,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 7.5,
     "tot": 10761175.854066566,
     "monthlyGross": 12500000,
     "ratio": 0.8608940683253252,
@@ -643,14 +653,14 @@
     "credit": 224000000,
     "cPmt": 5133333.333333333,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 7.5,
     "tot": 8730636.484249875,
     "monthlyGross": 12500000,
     "ratio": 0.69845091873999,
     "pass": false
    }
   },
-  "dsrRateEff": 6,
-  "creditRateEff": 7.5,
   "stressOn": true
  },
  "06-current-two-houses": {
@@ -756,6 +766,8 @@
     "credit": 626000000,
     "cPmt": 14345833.333333334,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 7.5,
     "tot": 14345833.333333334,
     "monthlyGross": 7037500,
     "ratio": 2.0384843102427475,
@@ -769,14 +781,14 @@
     "credit": 626000000,
     "cPmt": 14345833.333333334,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 7.5,
     "tot": 14345833.333333334,
     "monthlyGross": 7037500,
     "ratio": 2.0384843102427475,
     "pass": false
    }
   },
-  "dsrRateEff": 6,
-  "creditRateEff": 7.5,
   "stressOn": true
  },
  "07-current-price-tier-caps": {
@@ -882,6 +894,8 @@
     "credit": 640000000,
     "cPmt": 14666666.666666666,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 7.5,
     "tot": 17064868.767277695,
     "monthlyGross": 16666666.666666666,
     "ratio": 1.0238921260366618,
@@ -895,14 +909,14 @@
     "credit": 1860000000,
     "cPmt": 42625000,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 7.5,
     "tot": 43824101.050305516,
     "monthlyGross": 16666666.666666666,
     "ratio": 2.629446063018331,
     "pass": false
    }
   },
-  "dsrRateEff": 6,
-  "creditRateEff": 7.5,
   "stressOn": true
  },
  "08-current-networth-exceeds-fund-cap": {
@@ -1008,6 +1022,8 @@
     "credit": 39600000,
     "cPmt": 907500,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 7.5,
     "tot": 3065881.890549925,
     "monthlyGross": 6666666.666666667,
     "ratio": 0.4598822835824887,
@@ -1021,14 +1037,14 @@
     "credit": 39600000,
     "cPmt": 907500,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 7.5,
     "tot": 3065881.890549925,
     "monthlyGross": 6666666.666666667,
     "ratio": 0.4598822835824887,
     "pass": false
    }
   },
-  "dsrRateEff": 6,
-  "creditRateEff": 7.5,
   "stressOn": true
  },
  "09-legacy-firsttime-only": {
@@ -1146,6 +1162,8 @@
     "credit": 0,
     "cPmt": 0,
     "existing": 0,
+    "rate": 4.5,
+    "creditRate": 6,
     "tot": 1702462.6410149762,
     "monthlyGross": 5666666.666666667,
     "ratio": 0.3004345837085252,
@@ -1159,14 +1177,14 @@
     "credit": 0,
     "cPmt": 0,
     "existing": 0,
+    "rate": 4.5,
+    "creditRate": 6,
     "tot": 1702462.6410149762,
     "monthlyGross": 5666666.666666667,
     "ratio": 0.3004345837085252,
     "pass": true
    }
   },
-  "dsrRateEff": 4.5,
-  "creditRateEff": 6,
   "stressOn": false
  },
  "10-current-didim-income-boundary": {
@@ -1284,6 +1302,8 @@
     "credit": 0,
     "cPmt": 0,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 6,
     "tot": 1888584.1542311842,
     "monthlyGross": 5000000,
     "ratio": 0.3777168308462368,
@@ -1297,14 +1317,410 @@
     "credit": 0,
     "cPmt": 0,
     "existing": 0,
+    "rate": 6,
+    "creditRate": 6,
     "tot": 1888584.1542311842,
     "monthlyGross": 5000000,
     "ratio": 0.3777168308462368,
     "pass": true
    }
   },
-  "dsrRateEff": 6,
-  "creditRateEff": 7.5,
+  "stressOn": true
+ },
+ "11-oct-same-profile": {
+  "ruleset": "2026-10",
+  "seed": 190000000,
+  "gross": 84450000,
+  "net": 74880000,
+  "netWorth": 190000000,
+  "houses": 0,
+  "firstTime": true,
+  "newlywed": true,
+  "children": 0,
+  "bornAfter23": false,
+  "netWorthOK": true,
+  "newbornOK": false,
+  "didimOK": true,
+  "bogeumOK": true,
+  "loanType": "didim",
+  "isPolicy": true,
+  "monthlyNet": 6240000,
+  "living": 2000000,
+  "pay": 4240000,
+  "months": 360,
+  "affordable": 888115659.525787,
+  "conservative": 636000000,
+  "didimLimit": 320000000,
+  "bogeumStandalone": 360000000,
+  "bogeumExtra": 40000000,
+  "amtNewborn": 0,
+  "amtDidim": 320000000,
+  "amtDidimExtra": 40000000,
+  "amtBogeum": 0,
+  "amtGeneral": 636000000,
+  "priceCap": 600000000,
+  "s5": {
+   "reg": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": {
+     "d": 320000000,
+     "e": 40000000
+    }
+   },
+   "non": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": {
+     "d": 320000000,
+     "e": 40000000
+    }
+   }
+  },
+  "s6": {
+   "reg": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": {
+     "d": 320000000,
+     "e": 40000000
+    },
+    "budgetBefore": 550000000,
+    "loanWithCap": 360000000,
+    "budgetCap": 550000000,
+    "effLtv": 0.6545454545454545
+   },
+   "non": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": {
+     "d": 320000000,
+     "e": 40000000
+    },
+    "budgetBefore": 550000000,
+    "loanWithCap": 360000000,
+    "budgetCap": 550000000,
+    "effLtv": 0.6545454545454545
+   }
+  },
+  "s8": {
+   "reg": {
+    "price": 1000000000,
+    "loan": 400000000,
+    "appliedType": "general",
+    "ltvUsed": 0.4,
+    "cost": 18000000,
+    "availSeed": 172000000,
+    "budget": 572000000,
+    "ok": false,
+    "shortfall": 428000000,
+    "policyExceeded": true
+   },
+   "non": {
+    "price": 1000000000,
+    "loan": 508800000,
+    "appliedType": "general",
+    "ltvUsed": 0.7,
+    "cost": 18000000,
+    "availSeed": 172000000,
+    "budget": 680800000,
+    "ok": false,
+    "shortfall": 319200000,
+    "policyExceeded": true
+   }
+  },
+  "dsr": {
+   "reg": {
+    "price": 1000000000,
+    "loan": 400000000,
+    "appliedType": "general",
+    "mPmt": 2796858.034211106,
+    "credit": 428000000,
+    "cPmt": 9808333.333333334,
+    "existing": 0,
+    "rate": 7.5,
+    "creditRate": 7.5,
+    "tot": 12605191.36754444,
+    "monthlyGross": 7037500,
+    "ratio": 1.7911461978748762,
+    "pass": false
+   },
+   "non": {
+    "price": 1000000000,
+    "loan": 508800000,
+    "appliedType": "general",
+    "mPmt": 3557603.4195165266,
+    "credit": 319200000,
+    "cPmt": 7315000,
+    "existing": 0,
+    "rate": 7.5,
+    "creditRate": 7.5,
+    "tot": 10872603.419516526,
+    "monthlyGross": 7037500,
+    "ratio": 1.5449525285281032,
+    "pass": false
+   }
+  },
+  "stressOn": true
+ },
+ "12-oct-bogeum-marriage-penalty": {
+  "ruleset": "2026-10",
+  "seed": 190000000,
+  "gross": 120000000,
+  "net": 100000000,
+  "netWorth": 190000000,
+  "houses": 0,
+  "firstTime": false,
+  "newlywed": true,
+  "children": 0,
+  "bornAfter23": false,
+  "netWorthOK": true,
+  "newbornOK": false,
+  "didimOK": false,
+  "bogeumOK": true,
+  "loanType": "bogeum",
+  "isPolicy": false,
+  "monthlyNet": 8333333.333333333,
+  "living": 2000000,
+  "pay": 6333333.333333333,
+  "months": 360,
+  "affordable": 1326587856.209902,
+  "conservative": 760000000,
+  "didimLimit": 320000000,
+  "bogeumStandalone": 360000000,
+  "bogeumExtra": 40000000,
+  "amtNewborn": 0,
+  "amtDidim": 0,
+  "amtDidimExtra": 0,
+  "amtBogeum": 360000000,
+  "amtGeneral": 760000000,
+  "priceCap": 600000000,
+  "s5": {
+   "reg": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": null
+   },
+   "non": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": null
+   }
+  },
+  "s6": {
+   "reg": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": null,
+    "budgetBefore": 550000000,
+    "loanWithCap": 360000000,
+    "budgetCap": 550000000,
+    "effLtv": 0.6545454545454545
+   },
+   "non": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": null,
+    "budgetBefore": 550000000,
+    "loanWithCap": 360000000,
+    "budgetCap": 550000000,
+    "effLtv": 0.6545454545454545
+   }
+  },
+  "s8": {
+   "reg": {
+    "price": 550000000,
+    "loan": 360000000,
+    "appliedType": "bogeum",
+    "ltvUsed": 0.7,
+    "cost": 11000000,
+    "availSeed": 179000000,
+    "budget": 539000000,
+    "ok": false,
+    "shortfall": 11000000,
+    "policyExceeded": false
+   },
+   "non": {
+    "price": 550000000,
+    "loan": 360000000,
+    "appliedType": "bogeum",
+    "ltvUsed": 0.7,
+    "cost": 11000000,
+    "availSeed": 179000000,
+    "budget": 539000000,
+    "ok": false,
+    "shortfall": 11000000,
+    "policyExceeded": false
+   }
+  },
+  "dsr": {
+   "reg": {
+    "price": 550000000,
+    "loan": 360000000,
+    "appliedType": "bogeum",
+    "mPmt": 2517172.2307899958,
+    "credit": 11000000,
+    "cPmt": 238333.33333333334,
+    "existing": 0,
+    "rate": 7.5,
+    "creditRate": 6,
+    "tot": 2755505.5641233292,
+    "monthlyGross": 10000000,
+    "ratio": 0.27555055641233295,
+    "pass": true
+   },
+   "non": {
+    "price": 550000000,
+    "loan": 360000000,
+    "appliedType": "bogeum",
+    "mPmt": 2517172.2307899958,
+    "credit": 11000000,
+    "cPmt": 238333.33333333334,
+    "existing": 0,
+    "rate": 7.5,
+    "creditRate": 6,
+    "tot": 2755505.5641233292,
+    "monthlyGross": 10000000,
+    "ratio": 0.27555055641233295,
+    "pass": true
+   }
+  },
+  "stressOn": true
+ },
+ "13-oct-local-general-credit": {
+  "ruleset": "2026-10",
+  "seed": 300000000,
+  "gross": 150000000,
+  "net": 120000000,
+  "netWorth": 300000000,
+  "houses": 0,
+  "firstTime": false,
+  "newlywed": false,
+  "children": 0,
+  "bornAfter23": false,
+  "netWorthOK": true,
+  "newbornOK": false,
+  "didimOK": false,
+  "bogeumOK": false,
+  "loanType": "general",
+  "isPolicy": false,
+  "monthlyNet": 10000000,
+  "living": 2000000,
+  "pay": 8000000,
+  "months": 360,
+  "affordable": 1675689923.6335604,
+  "conservative": 960000000,
+  "didimLimit": 200000000,
+  "bogeumStandalone": 360000000,
+  "bogeumExtra": 160000000,
+  "amtNewborn": 0,
+  "amtDidim": 0,
+  "amtDidimExtra": 0,
+  "amtBogeum": 0,
+  "amtGeneral": 960000000,
+  "priceCap": null,
+  "s5": {
+   "reg": {
+    "ltv": 0.4,
+    "ltvCap": 200000000,
+    "amt": 200000000,
+    "parts": null
+   },
+   "non": {
+    "ltv": 0.7,
+    "ltvCap": 699999999.9999999,
+    "amt": 699999999.9999999,
+    "parts": null
+   }
+  },
+  "s6": {
+   "reg": {
+    "ltv": 0.4,
+    "ltvCap": 200000000,
+    "amt": 200000000,
+    "parts": null,
+    "budgetBefore": 500000000,
+    "loanWithCap": 200000000,
+    "budgetCap": 500000000,
+    "effLtv": 0.4
+   },
+   "non": {
+    "ltv": 0.7,
+    "ltvCap": 699999999.9999999,
+    "amt": 699999999.9999999,
+    "parts": null,
+    "budgetBefore": 999999999.9999999,
+    "loanWithCap": 699999999.9999999,
+    "budgetCap": 999999999.9999999,
+    "effLtv": 0.7
+   }
+  },
+  "s8": {
+   "reg": {
+    "price": 1500000000,
+    "loan": 600000000,
+    "appliedType": "general",
+    "ltvUsed": 0.4,
+    "cost": 30000000,
+    "availSeed": 270000000,
+    "budget": 870000000,
+    "ok": false,
+    "shortfall": 630000000,
+    "policyExceeded": false
+   },
+   "non": {
+    "price": 900000000,
+    "loan": 630000000,
+    "appliedType": "general",
+    "ltvUsed": 0.7,
+    "cost": 18000000,
+    "availSeed": 282000000,
+    "budget": 912000000,
+    "ok": true,
+    "shortfall": 0,
+    "policyExceeded": false
+   }
+  },
+  "dsr": {
+   "reg": {
+    "price": 1500000000,
+    "loan": 600000000,
+    "appliedType": "general",
+    "mPmt": 4195287.051316659,
+    "credit": 630000000,
+    "cPmt": 14437500,
+    "existing": 0,
+    "rate": 7.5,
+    "creditRate": 7.5,
+    "tot": 18632787.05131666,
+    "monthlyGross": 12500000,
+    "ratio": 1.4906229641053328,
+    "pass": false
+   },
+   "non": {
+    "price": 900000000,
+    "loan": 630000000,
+    "appliedType": "general",
+    "mPmt": 3478883.3234939533,
+    "credit": 0,
+    "cPmt": 0,
+    "existing": 0,
+    "rate": 5.25,
+    "creditRate": 6,
+    "tot": 3478883.3234939533,
+    "monthlyGross": 12500000,
+    "ratio": 0.27831066587951625,
+    "pass": true
+   }
+  },
   "stressOn": true
  }
 }

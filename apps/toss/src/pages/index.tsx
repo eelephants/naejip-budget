@@ -27,7 +27,7 @@ import {
 import type { BudgetResult, FormState, RegionKey, RulesetId } from "../core";
 import { Badge, C, Card, Check, MoneyField, NumField, Row, YesNo } from "../ui";
 
-const ACTIVE_RULESET: RulesetId = "2026-08"; // 규제 변경 시 코어에 새 룰셋 추가 후 이 키만 교체
+const ACTIVE_RULESET: RulesetId = "2026-10"; // 규제 변경 시 코어에 새 룰셋 추가 후 이 키만 교체
 const REGIONS: readonly RegionKey[] = ["reg", "non"];
 const STORAGE_KEY = "naejip.form.v1";
 
@@ -227,10 +227,10 @@ function Page() {
           note="마이너스통장·자동차 할부·카드론·학자금 포함 / 장기렌트·운용리스는 미포함"
         />
         <Check
-          label="스트레스 DSR 가산금리 (수도권 +1.5%p)"
+          label="스트레스 DSR 가산금리 (수도권·규제 +3.0%p / 지방 +0.75%p)"
           value={f.useStress}
           onChange={set("useStress")}
-          note={`의무 적용 · 현재 주담대 ${res.dsrRateEff.toFixed(2)}% / 신용 ${res.creditRateEff.toFixed(2)}% 적용 중`}
+          note={`의무 적용 · 주담대 규제지역 ${res.dsr.reg.rate.toFixed(2)}% / 비규제 ${res.dsr.non.rate.toFixed(2)}% · 신용대출은 1억 초과 시 +1.5%p`}
         />
       </Card>
 

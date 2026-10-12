@@ -9,7 +9,7 @@ export const EOK = 100_000_000;
 /** 규제지역 / 비규제지역 두 시나리오 키 */
 export type RegionKey = "reg" | "non";
 
-export type RulesetId = "2024-07" | "2026-08";
+export type RulesetId = "2024-07" | "2026-08" | "2026-10";
 
 export interface Ruleset {
   id: RulesetId;
@@ -27,8 +27,11 @@ export interface Ruleset {
   multiHouseLtv: { reg: number; non: number; metroNon: number };
   /** 주담대 시가별 절대한도. 해당 규제가 없던 시점은 null */
   capByPrice: ((price: number) => number) | null;
-  /** 스트레스 DSR 가산금리(%p) */
-  stressAdd: number;
+  /** 스트레스 DSR 가산금리(%p) — 주담대는 수도권·규제지역(metro)/지방(local) 차등,
+   *  신용대출은 잔액이 creditMin 초과일 때만 가산 */
+  stress: { metro: number; local: number; credit: number; creditMin: number };
+  /** 보금자리론 신혼 맞벌이 결혼페널티 완화: 합산 기준 초과여도 부부 중 1인 소득이 이 값 이하면 가능. 없던 시점은 null */
+  bogeumSpouseMax: number | null;
   /** 의무 적용 여부 (해제는 미적용 시와의 비교용) */
   stressForced: boolean;
 }
@@ -46,7 +49,8 @@ export const RULESETS: Record<RulesetId, Ruleset> = {
     generalLtv: { reg: 0.5, non: 0.7 },
     multiHouseLtv: { reg: 0.3, non: 0.6, metroNon: 0.6 },
     capByPrice: null, // 시가별 절대한도 없음
-    stressAdd: 0,
+    stress: { metro: 0, local: 0, credit: 0, creditMin: 0 },
+    bogeumSpouseMax: null,
     stressForced: false,
   },
 
@@ -62,7 +66,28 @@ export const RULESETS: Record<RulesetId, Ruleset> = {
     generalLtv: { reg: 0.4, non: 0.7 }, // 10.15 대책: 규제지역 70→40%
     multiHouseLtv: { reg: 0, non: 0.6, metroNon: 0 }, // 규제지역·수도권 추가구입 주담대 금지
     capByPrice: (p) => (p <= 15 * EOK ? 6 * EOK : p <= 25 * EOK ? 4 * EOK : 2 * EOK),
-    stressAdd: 1.5, // 스트레스 DSR 3단계: 수도권 +1.5%p (주담대·신용대출 공통)
+    stress: { metro: 1.5, local: 1.5, credit: 1.5, creditMin: 0 }, // 당시 계산기 기준: 일괄 +1.5%p
+    bogeumSpouseMax: null,
+    stressForced: true,
+  },
+
+  /* 현행 규제 (2026.10 기준) — 2026-08 대비 변경분
+   * - 스트레스 DSR: 10.15 대책 수도권·규제지역 주담대 하한 3.0%p, 지방 주담대 1.5%p × 적용비율 50%('26 하반기 유지),
+   *   신용대출은 잔액 1억 초과분만 1.5%p
+   * - 8.13 대책 후속: 보금자리론 신혼 맞벌이는 부부 중 1인 연소득 7천 이하면 가능 ('26.10.19 신청분~) */
+  "2026-10": {
+    id: "2026-10",
+    name: "현행 규제 반영 (2026.10)",
+    newbornIncomeMax: 2.0 * EOK,
+    newbornLimit: 4 * EOK,
+    didimLimit: { multi: 3.2 * EOK, first: 2.4 * EOK, base: 2 * EOK },
+    netWorthCap: 5.11 * EOK,
+    policyLtv: { reg: 0.7, non: 0.7 },
+    generalLtv: { reg: 0.4, non: 0.7 },
+    multiHouseLtv: { reg: 0, non: 0.6, metroNon: 0 },
+    capByPrice: (p) => (p <= 15 * EOK ? 6 * EOK : p <= 25 * EOK ? 4 * EOK : 2 * EOK),
+    stress: { metro: 3.0, local: 0.75, credit: 1.5, creditMin: 1 * EOK },
+    bogeumSpouseMax: 0.7 * EOK,
     stressForced: true,
   },
 };
