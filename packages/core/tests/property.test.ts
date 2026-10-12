@@ -166,3 +166,40 @@ test("P7: 현행 2주택 이상은 규제지역·수도권 대출 0", () => {
   const rural = computeBudget({ ...input, isMetro: false }, R);
   assert.ok(rural.s8.non.loan > 0); // 지방 비규제는 LTV 60%로 가능
 });
+
+test("P8: 2026-10 보금자리론 결혼페널티 완화 (신혼 맞벌이 1인 7,000만원 경계)", () => {
+  const base: BudgetInput = {
+    seed: 2 * EOK, gross: 1.2 * EOK, net: 1.0 * EOK, netWorth: 6 * EOK, houses: 0,
+    firstTime: false, newlywed: true, children: 0, bornAfter23: false,
+    living: 200 * MAN, loanRate: 4, loanYears: 30, isMetro: true,
+    priceReg: 5.5 * EOK, priceNon: 5.5 * EOK, costRate: 2,
+    dsrRate: 4.5, dsrYears: 30, creditRate: 6, useStress: true, existingDebtMonthly: 0,
+  };
+  const R = RULESETS["2026-10"];
+  assert.equal(computeBudget({ ...base, grossLower: 7000 * MAN }, R).loanType, "bogeum");
+  assert.equal(computeBudget({ ...base, grossLower: 7000 * MAN + 1 }, R).bogeumOK, false);
+  assert.equal(computeBudget({ ...base, grossLower: 7000 * MAN, newlywed: false }, R).bogeumOK, false);
+  assert.equal(computeBudget({ ...base }, R).bogeumOK, false, "grossLower 생략(외벌이) → 합산 기준");
+  assert.equal(computeBudget({ ...base, grossLower: 5000 * MAN }, RULESETS["2026-08"]).bogeumOK, false, "이전 룰셋은 미적용");
+});
+
+test("P9: 2026-10 스트레스 DSR — 수도권·규제 3.0 / 지방 0.75 / 신용 1억 초과만 1.5", () => {
+  const R = RULESETS["2026-10"];
+  const base: BudgetInput = {
+    seed: 1 * EOK, gross: 1.5 * EOK, net: 1.2 * EOK, netWorth: 1 * EOK, houses: 0,
+    firstTime: false, newlywed: false, children: 0, bornAfter23: false,
+    living: 200 * MAN, loanRate: 4, loanYears: 30, isMetro: false,
+    priceReg: 6 * EOK, priceNon: 6 * EOK, costRate: 2,
+    dsrRate: 4.5, dsrYears: 30, creditRate: 6, useStress: true, existingDebtMonthly: 0,
+  };
+  const r = computeBudget(base, R);
+  assert.equal(r.dsr.reg.rate, 7.5);
+  assert.equal(r.dsr.non.rate, 5.25);
+  assert.equal(computeBudget({ ...base, isMetro: true }, R).dsr.non.rate, 7.5);
+  assert.equal(computeBudget({ ...base, useStress: false }, R).dsr.reg.rate, 4.5);
+  // 부족분(신용대출) 1억 이하 → 가산 없음, 초과 → +1.5
+  const small = computeBudget({ ...base, priceNon: 5 * EOK }, R).dsr.non;
+  assert.ok(small.credit > 0 && small.credit <= EOK && small.creditRate === 6, `credit=${small.credit} rate=${small.creditRate}`);
+  const big = computeBudget({ ...base, priceNon: 9 * EOK }, R).dsr.non;
+  assert.ok(big.credit > EOK && big.creditRate === 7.5, `credit=${big.credit} rate=${big.creditRate}`);
+});

@@ -12,6 +12,7 @@ import {
   computeBudget,
   fmt,
   fmtWonExact,
+  lowerEarner,
   parseMan,
   parseNum,
   pct,
@@ -20,7 +21,7 @@ import type { BudgetInput, RegionKey, RulesetId, Step8 } from "@naejip/core";
 
 const EOK = 100_000_000;
 
-const ACTIVE_RULESET: RulesetId = "2026-08"; // 규제 변경 시 코어에 새 룰셋 추가 후 이 키만 교체
+const ACTIVE_RULESET: RulesetId = "2026-10"; // 규제 변경 시 코어에 새 룰셋 추가 후 이 키만 교체
 
 /* ---------- DOM helpers ---------- */
 type Valued = HTMLInputElement | HTMLSelectElement;
@@ -42,6 +43,7 @@ function collectInput(): BudgetInput {
   return {
     seed: money("seedSelf") + money("seedSpouse"),
     gross: money("grossSelf") + money("grossSpouse"),
+    grossLower: lowerEarner(money("grossSelf"), money("grossSpouse")),
     net: money("netSelf") + money("netSpouse"),
     netWorth: money("netWorth"),
     houses: numOf("houses"),
@@ -102,7 +104,7 @@ function render(): void {
         <tr><td>디딤돌대출</td><td style="text-align:left;white-space:normal">
           무주택 · 부부합산 소득 6천 이하(생애최초·2자녀 이상 7천, 신혼 8.5천 이하) · 순자산 ${fmt(R.netWorthCap)} 이하 · 매매가 5억(신혼·2자녀 6억) 이하 · 한도 일반 ${fmt(R.didimLimit.base)} / 생초 ${fmt(R.didimLimit.first)} / 신혼·2자녀 ${fmt(R.didimLimit.multi)}</td></tr>
         <tr><td>기존보금자리론</td><td style="text-align:left;white-space:normal">
-          무주택(또는 처분조건 1주택) · 소득 7천 이하(1자녀 8천, 2자녀 9천, 3자녀 1억, 신혼 8.5천) · 매매가 6억 이하 · 한도 3.6억(3자녀 이상 4억)</td></tr>
+          무주택(또는 처분조건 1주택) · 소득 7천 이하(1자녀 8천, 2자녀 9천, 3자녀 1억, 신혼 8.5천${R.bogeumSpouseMax ? ` — 신혼 맞벌이는 초과해도 부부 중 1인 ${fmt(R.bogeumSpouseMax)} 이하면 가능` : ""}) · 매매가 6억 이하 · 한도 3.6억(3자녀 이상 4억)</td></tr>
       </tbody>
     </table></div>`;
 
@@ -211,8 +213,8 @@ function render(): void {
     const isPolicyApplied = d.appliedType !== "general";
     return `<tr>
       <td>${REGION_LABEL[k]}</td>
-      <td>${fmt(d.loan)}</td><td>${fmtWonExact(d.mPmt)}</td>
-      <td>${fmt(d.credit)}</td><td>${fmtWonExact(d.cPmt)}</td>
+      <td>${fmt(d.loan)}</td><td>${fmtWonExact(d.mPmt)}<br><small>${d.rate.toFixed(2)}%</small></td>
+      <td>${fmt(d.credit)}</td><td>${fmtWonExact(d.cPmt)}<br><small>${d.creditRate.toFixed(2)}%</small></td>
       <td>${fmtWonExact(d.existing)}</td>
       <td class="em">${fmtWonExact(d.tot)}</td>
       <td>${fmt(d.monthlyGross)}</td>
@@ -230,7 +232,7 @@ function render(): void {
       }</td></tr>`;
   };
   el("dsrTable").innerHTML = `
-    <thead><tr><th>지역</th><th>주담대<br>(최종 대출액)</th><th>주담대 월상환<br><small>적용금리 ${res.dsrRateEff.toFixed(2)}%${res.stressOn ? " (스트레스 가산)" : ""}</small></th><th>신용대출<br>(부족분)</th><th>신용 월상환<br><small>적용금리 ${res.creditRateEff.toFixed(2)}%</small></th><th>기존부채<br>월상환</th><th>월 상환 합계</th><th>세전 월소득</th><th>DSR</th><th>판정</th></tr></thead>
+    <thead><tr><th>지역</th><th>주담대<br>(최종 대출액)</th><th>주담대 월상환<br><small>적용금리${res.stressOn ? " (스트레스 가산)" : ""}</small></th><th>신용대출<br>(부족분)</th><th>신용 월상환<br><small>적용금리</small></th><th>기존부채<br>월상환</th><th>월 상환 합계</th><th>세전 월소득</th><th>DSR</th><th>판정</th></tr></thead>
     <tbody>${dsrRow("reg")}${dsrRow("non")}</tbody>`;
 
   // 최종 요약

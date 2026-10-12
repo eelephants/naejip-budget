@@ -5,6 +5,7 @@
  * ========================================================= */
 
 import { parseMan, parseNum } from "./format.ts";
+import { lowerEarner } from "./calc.ts";
 import type { BudgetInput } from "./calc.ts";
 
 export interface FormState {
@@ -65,6 +66,7 @@ export function toBudgetInput(f: FormState): BudgetInput {
   return {
     seed: parseMan(f.seedSelf) + parseMan(f.seedSpouse),
     gross: parseMan(f.grossSelf) + parseMan(f.grossSpouse),
+    grossLower: lowerEarner(parseMan(f.grossSelf), parseMan(f.grossSpouse)),
     net: parseMan(f.netSelf) + parseMan(f.netSpouse),
     netWorth: parseMan(f.netWorth),
     houses: parseNum(f.houses),

@@ -78,4 +78,15 @@ export const CASES: Case[] = [
     ruleset: "2026-08",
     input: { ...base, newlywed: false, firstTime: false, gross: 6000 * MAN, net: 5300 * MAN, priceReg: 4.5 * EOK, priceNon: 4.5 * EOK },
   },
+  { id: "11-oct-same-profile", ruleset: "2026-10", input: { ...base } },
+  {
+    id: "12-oct-bogeum-marriage-penalty",
+    ruleset: "2026-10",
+    input: { ...base, firstTime: false, gross: 1.2 * EOK, grossLower: 5000 * MAN, net: 1.0 * EOK, priceReg: 5.5 * EOK, priceNon: 5.5 * EOK },
+  },
+  {
+    id: "13-oct-local-general-credit",
+    ruleset: "2026-10",
+    input: { ...base, newlywed: false, firstTime: false, isMetro: false, gross: 1.5 * EOK, net: 1.2 * EOK, seed: 3 * EOK, netWorth: 3 * EOK, priceReg: 15 * EOK, priceNon: 9 * EOK },
+  },
 ];
