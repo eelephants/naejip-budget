@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://naejip-budget.vercel.app/sitemap.xml

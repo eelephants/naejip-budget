@@ -9,7 +9,7 @@
     "apps/web"
   ],
   "scripts": {
-    "test": "npm test --workspace=@naejip/core",
+    "test": "npm test --workspace=@naejip/core && npm test --workspace=@naejip/web",
     "golden:update": "npm run golden:update --workspace=@naejip/core",
     "typecheck": "npm run typecheck --workspaces --if-present && npm --prefix apps/toss run typecheck",
     "build:web": "npm run build --workspace=@naejip/web",
