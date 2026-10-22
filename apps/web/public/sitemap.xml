@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://naejip-budget.site/</loc></url>
+  <url><loc>https://naejip-budget.site/guide/</loc></url>
+  <url><loc>https://naejip-budget.site/guide/budget.html</loc></url>
+  <url><loc>https://naejip-budget.site/guide/policy-loans.html</loc></url>
+  <url><loc>https://naejip-budget.site/guide/dsr.html</loc></url>
+  <url><loc>https://naejip-budget.site/guide/ltv.html</loc></url>
+  <url><loc>https://naejip-budget.site/guide/faq.html</loc></url>
   <url><loc>https://naejip-budget.site/privacy.html</loc></url>
 </urlset>
