@@ -75,6 +75,8 @@ npm run golden:update # 의도된 변경 시 골든 스냅샷 재생성 (diff �
   단일 번들로 묶어 `apps/web/dist`를 정적 배포합니다. `installCommand`를 웹 워크스페이스로
   한정했으므로(`--workspace=@naejip/web`) Expo·Granite 의존성은 설치조차 하지 않고,
   앱 쪽 변경이 웹 배포를 깨뜨릴 수 없습니다.
+  Vercel 프로젝트는 Git 미연동이고 GitHub Actions(`.github/workflows/deploy.yml`)가 배포합니다.
+  PR은 테스트 후 프리뷰, main push는 테스트 후 프로덕션. 레포 시크릿 `VERCEL_TOKEN`이 필요합니다.
 - **스토어 앱**: Expo. 배포는 EAS Build(`eas build`) 사용.
 - **앱인토스 미니앱**: 아래 「앱인토스 출시 절차」 참고.
 
