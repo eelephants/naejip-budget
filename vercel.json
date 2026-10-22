@@ -2,5 +2,13 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "npm install --include-workspace-root --workspace=@naejip/web",
   "buildCommand": "npm run build:web",
-  "outputDirectory": "apps/web/dist"
+  "outputDirectory": "apps/web/dist",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "naejip-budget.vercel.app" }],
+      "destination": "https://naejip-budget.site/:path*",
+      "permanent": true
+    }
+  ]
 }
