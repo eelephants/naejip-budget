@@ -1,0 +1,48 @@
+name: 부동산 보도자료 감시
+
+# 규제가 바뀌면 packages/core/src/rulesets.ts 에 새 룰셋을 추가해야 하므로,
+# 국토부·금융위 보도자료를 주기적으로 확인해 신규 건이 있으면 Issue 로 알린다.
+on:
+  schedule:
+    # 평일 KST 10:00 / 14:00 / 18:00 (UTC 01:00 / 05:00 / 09:00)
+    - cron: "0 1,5,9 * * 1-5"
+  workflow_dispatch:
+
+concurrency:
+  group: press-watch
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: 보도자료 조회
+        id: scan
+        run: python3 .github/scripts/watch_press.py
+
+      - name: Issue 생성
+        if: steps.scan.outputs.has_new == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BODY: ${{ steps.scan.outputs.body }}
+          COUNT: ${{ steps.scan.outputs.count }}
+        run: |
+          printf '%s\n' "$BODY" > /tmp/issue.md
+          gh issue create \
+            --title "부동산 보도자료 신규 ${COUNT}건 ($(TZ=Asia/Seoul date +%Y-%m-%d))" \
+            --body-file /tmp/issue.md
+
+      - name: 확인한 건 기록
+        if: steps.scan.outputs.has_new == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/press-watch-seen.json
+          git diff --staged --quiet || git commit -m "보도자료 감시: 확인한 건 갱신"
+          git push origin HEAD:main
