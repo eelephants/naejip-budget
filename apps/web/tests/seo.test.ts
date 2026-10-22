@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const dist = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
-const SITE = "https://naejip-budget.vercel.app/";
+const SITE = "https://naejip-budget.site/";
 const html = readFileSync(join(dist, "index.html"), "utf8");
 const attr = (sel: RegExp): string | undefined => html.match(sel)?.[1];
 const meta = (k: string): string | undefined => attr(new RegExp(`<meta (?:property|name)="${k}" content="([^"]+)"`));

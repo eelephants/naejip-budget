@@ -2,7 +2,7 @@
 
 종잣돈과 소득을 입력하면 정책대출 자격 판정부터 최종 예산, DSR 점검까지 한 번에 계산하는 웹 계산기.
 
-**Live**: https://naejip-budget.vercel.app
+**Live**: https://naejip-budget.site
 
 ## 특징
 
