@@ -49,3 +49,18 @@ test("애드센스 스크립트와 ads.txt의 게시자 ID가 일치", () => {
   assert.ok(readFileSync(join(dist, "ads.txt"), "utf8").includes(`google.com, ${client}, DIRECT, f08c47fec0942fa0`));
   assert.ok(existsSync(join(dist, "privacy.html")) && html.includes('href="privacy.html"'), "개인정보처리방침 페이지·링크 없음");
 });
+
+test("가이드 페이지: sitemap 등재, 고유 canonical·title, 애드센스·메인 링크", () => {
+  const sitemap = readFileSync(join(dist, "sitemap.xml"), "utf8");
+  const titles = new Set<string>();
+  for (const slug of ["budget", "policy-loans", "dsr", "ltv", "faq"]) {
+    const url = `${SITE}guide/${slug}.html`;
+    const page = readFileSync(join(dist, "guide", `${slug}.html`), "utf8");
+    assert.ok(sitemap.includes(`<loc>${url}</loc>`), `${slug} sitemap 누락`);
+    assert.ok(page.includes(`<link rel="canonical" href="${url}" />`), `${slug} canonical`);
+    assert.ok(page.includes("adsbygoogle.js?client=ca-pub-"), `${slug} 애드센스 없음`);
+    assert.ok(html.includes(`href="guide/${slug}.html"`), `메인에서 ${slug} 링크 없음`);
+    titles.add(page.match(/<title>([^<]+)<\/title>/)![1]);
+  }
+  assert.equal(titles.size, 5, "가이드 title 중복");
+});

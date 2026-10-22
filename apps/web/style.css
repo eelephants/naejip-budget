@@ -198,3 +198,24 @@ blockquote {
   .result-strip { padding: 12px; }
   .tabs { position: sticky; top: 0; z-index: 10; background: var(--bg); padding: 8px 12px; margin-top: 0; }
 }
+
+/* ---- 가이드 글 페이지 ---- */
+.guide-nav { display: flex; gap: 6px; margin-top: 14px; overflow-x: auto; }
+.guide-nav a {
+  color: #dfe7fb; font-size: 13px; text-decoration: none; white-space: nowrap;
+  padding: 6px 12px; border: 1px solid rgba(255,255,255,.25); border-radius: 999px;
+}
+.guide-nav a[aria-current="page"] { background: #fff; color: var(--brand-ink); font-weight: 700; }
+.article { font-size: 15px; }
+.article p, .article li { line-height: 1.75; }
+.article .lead { color: var(--sub); margin-top: 0; }
+.article .cta {
+  display: inline-block; margin-top: 8px; background: var(--brand); color: #fff;
+  padding: 10px 18px; border-radius: 10px; font-weight: 700; text-decoration: none;
+}
+.article details { border-top: 1px solid var(--line); padding: 12px 0; }
+.article details summary { font-weight: 700; cursor: pointer; }
+.guide-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.guide-list a { display: block; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; color: var(--ink); text-decoration: none; }
+.guide-list a b { display: block; color: var(--brand-ink); }
+.guide-list a span { color: var(--sub); font-size: 13.5px; }
