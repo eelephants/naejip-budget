@@ -5,9 +5,9 @@
   "outputDirectory": "apps/web/dist",
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "naejip-budget.vercel.app" }],
-      "destination": "https://naejip-budget.site/:path*",
+      "destination": "https://naejip-budget.site/$1",
       "permanent": true
     }
   ]

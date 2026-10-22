@@ -1,0 +1,47 @@
+# Vercel 프로젝트가 Git 미연동이라 배포를 Actions에서 한다. PR → 테스트 + 프리뷰, main → 테스트 + 프로덕션
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  VERCEL_ORG_ID: team_WGYCO1pFVmhicieCjfuO6xiO
+  VERCEL_PROJECT_ID: prj_kVSBytspEA6T4SMl2x38IaeKUGM1
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --include-workspace-root --workspace=@naejip/core --workspace=@naejip/web
+      - run: npm test --workspace=@naejip/core && npm test --workspace=@naejip/web
+
+  deploy:
+    needs: test
+    # 포크 PR에는 시크릿이 없으므로 건너뛴다
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install -g vercel@latest
+      - name: Pull Vercel settings
+        run: vercel pull --yes --environment=${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }} --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build
+        run: vercel build ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy
+        id: deploy
+        run: echo "url=$(vercel deploy --prebuilt ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --token=${{ secrets.VERCEL_TOKEN }})" >> "$GITHUB_OUTPUT"
+      - run: echo "배포 완료 → ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
