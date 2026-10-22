@@ -42,3 +42,10 @@ test("robots·sitemap·favicon·og 이미지가 dist에 존재하고 서로 맞�
   assert.ok(sitemap.includes('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'), "sitemap 네임스페이스 없음"); // autoplan
   assert.ok(html.includes('href="favicon.svg"'), "favicon 링크 없음"); // autoplan: 상대경로 — style.css·app.js와 동일, `npm run web`(file://)에서도 동작
 });
+
+test("애드센스 스크립트와 ads.txt의 게시자 ID가 일치", () => {
+  const client = attr(/adsbygoogle\.js\?client=ca-(pub-\d+)/);
+  assert.ok(client, "애드센스 스크립트 없음");
+  assert.ok(readFileSync(join(dist, "ads.txt"), "utf8").includes(`google.com, ${client}, DIRECT, f08c47fec0942fa0`));
+  assert.ok(existsSync(join(dist, "privacy.html")) && html.includes('href="privacy.html"'), "개인정보처리방침 페이지·링크 없음");
+});
