@@ -1,0 +1,209 @@
+{
+  "crf": 19,
+  "slides": [
+    {
+      "kicker": "시세",
+      "duration": 6.5,
+      "blocks": [
+        {
+          "type": "headline",
+          "lines": [
+            "서울 아파트 매매가",
+            "주간 상승률"
+          ]
+        },
+        {
+          "type": "bars",
+          "items": [
+            {
+              "label": "8월 1주",
+              "value": "0.26%",
+              "width_ratio": 1.0,
+              "color": "dim"
+            },
+            {
+              "label": "8월 2주",
+              "value": "0.21%",
+              "width_ratio": 0.81,
+              "color": "cool"
+            }
+          ]
+        },
+        {
+          "type": "headline",
+          "size": 76,
+          "lines": [
+            "오름폭 축소"
+          ],
+          "color": "cool"
+        },
+        {
+          "type": "sub",
+          "text": "매매·전세 동반 둔화, 강남권 일부 하락 거래",
+          "size": 36
+        }
+      ],
+      "footer": "대단지·역세권 선호 단지는 상승 거래 지속 → 가격 하방 지지"
+    },
+    {
+      "kicker": "공급",
+      "duration": 6.5,
+      "blocks": [
+        {
+          "type": "headline",
+          "lines": [
+            "공공택지 조성~착공",
+            "기간 단축"
+          ]
+        },
+        {
+          "type": "delta",
+          "from": "68",
+          "from_unit": "개월",
+          "to": "37",
+          "to_unit": "개월",
+          "color": "accent"
+        },
+        {
+          "type": "rows",
+          "rows": [
+            {
+              "label": "지구지정",
+              "from": "12",
+              "to": "4",
+              "unit": "개월"
+            },
+            {
+              "label": "지구계획",
+              "from": "24",
+              "to": "13",
+              "unit": "개월"
+            },
+            {
+              "label": "보상·이주",
+              "from": "44",
+              "to": "24",
+              "unit": "개월"
+            },
+            {
+              "label": "부지조성",
+              "from": "12",
+              "to": "9",
+              "unit": "개월"
+            }
+          ]
+        }
+      ],
+      "footer": "절차 병렬 진행 · 토지보상·주민협의 변수는 남아 있음"
+    },
+    {
+      "kicker": "가계대출",
+      "duration": 6.5,
+      "blocks": [
+        {
+          "type": "headline",
+          "lines": [
+            "가계부채 총량",
+            "증가율 목표 상향"
+          ]
+        },
+        {
+          "type": "delta",
+          "from": "1.5",
+          "from_unit": "%",
+          "to": "3.0",
+          "to_unit": "%",
+          "color": "warm"
+        },
+        {
+          "type": "stat_card",
+          "label": "하반기 추가 대출 여력",
+          "value": "+30",
+          "unit": "조원"
+        }
+      ],
+      "footer": "은행별 목표 확정 후 순차 적용 → 즉각적인 한도 확대는 아님"
+    },
+    {
+      "kicker": "금리",
+      "duration": 6.5,
+      "blocks": [
+        {
+          "type": "headline",
+          "lines": [
+            "8월 27일 금통위",
+            "전망 엇갈림"
+          ],
+          "accent_line": 1
+        },
+        {
+          "type": "delta",
+          "size": 104,
+          "from": "2.75",
+          "from_unit": "%",
+          "to": "3.00",
+          "to_unit": "%",
+          "color": "dim"
+        },
+        {
+          "type": "cards",
+          "cards": [
+            {
+              "name": "씨티은행",
+              "value": "추가 인상",
+              "tone": "warm"
+            },
+            {
+              "name": "우리금융경영연구소",
+              "value": "매파적 동결",
+              "tone": "cool"
+            }
+          ]
+        }
+      ],
+      "footer": "7/16 금통위에서 2.50% → 2.75% 인상 (2023년 1월 이후 첫 인상)"
+    },
+    {
+      "kicker": "이번 주 일정",
+      "duration": 7.0,
+      "blocks": [
+        {
+          "type": "headline",
+          "lines": [
+            "청약·분양 캘린더"
+          ]
+        },
+        {
+          "type": "agenda",
+          "rows": [
+            {
+              "key": "8/18",
+              "text": "월계중흥S-클래스리비에르 계약",
+              "tag": "노원"
+            },
+            {
+              "key": "8/19",
+              "text": "써밋클라비온 · 충정로역자이르네",
+              "tag": "1순위"
+            },
+            {
+              "key": "8/20",
+              "text": "두산위브더제니스부천 외 1건",
+              "tag": "1순위"
+            },
+            {
+              "key": "8/21",
+              "text": "쌍용더플래티넘서대문 모델하우스",
+              "tag": "서대문"
+            }
+          ]
+        },
+        {
+          "type": "cta",
+          "title": "매일 아침, 부동산 브리핑",
+          "sub": "내 예산 계산은 naejip-budget.site"
+        }
+      ]
+    }
+  ]
+}
