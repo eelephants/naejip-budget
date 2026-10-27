@@ -236,9 +236,32 @@ function render(): void {
     <tbody>${dsrRow("reg")}${dsrRow("non")}</tbody>`;
 
   // 최종 요약
+  const isEmpty = res.seed === 0 && res.gross === 0;
+  el("shareBtn").hidden = isEmpty;
+  if (isEmpty) {
+    el("finalSummary").innerHTML = `<div class="empty-summary">
+      <b>종잣돈과 소득을 넣으면 여기에 살 수 있는 집값이 나와요</b>
+      1단계부터 입력하거나, 예시 값으로 먼저 결과를 확인해 보세요.<br>
+      <button type="button" class="example-btn" data-fill-example>예시로 채워 보기</button>
+    </div>`;
+    return;
+  }
+  // 매매가 미입력: 8단계 대출이 0이 되므로 6단계 예산 한도(살 수 있는 집값 상한)를 보여준다
+  const capBox = (k: RegionKey): string => {
+    const s = res.s6[k];
+    return `<div class="summary-box">
+      <h3>${REGION_LABEL[k]}</h3>
+      <div class="amount">${fmt(res.priceCap === Infinity ? s.budgetBefore : s.budgetCap)}</div>
+      <div class="row"><span>종잣돈</span><b>${fmt(res.seed)}</b></div>
+      <div class="row"><span>대출가능액</span><b>${fmt(s.loanWithCap)}</b></div>
+      <div class="row"><span>적용 대출</span><b>${LOAN_LABEL[res.loanType]}</b></div>
+      <div class="row"><span>기준</span><b>살 수 있는 집값 상한 (부대비용 차감 전)</b></div>
+    </div>`;
+  };
   const sumBox = (k: RegionKey): string => {
     const s = res.s8[k];
     const d = res.dsr[k];
+    if (s.price === 0) return capBox(k);
     return `<div class="summary-box">
       <h3>${REGION_LABEL[k]}</h3>
       <div class="amount">${fmt(s.budget)}</div>
@@ -259,8 +282,31 @@ function render(): void {
       }
     </div>`;
   };
+  const noPrice = res.s8.reg.price === 0 || res.s8.non.price === 0;
   el("finalSummary").innerHTML = `<div class="summary-grid">${sumBox("reg")}${sumBox("non")}</div>
+    ${showingExample ? '<p class="note"><b>예시 값으로 계산한 결과예요.</b> 1단계부터 내 숫자로 바꿔 보세요.</p>' : ""}
+    ${noPrice ? '<p class="note">7~8단계에 사고 싶은 집의 매매가를 넣으면 부대비용과 DSR까지 반영한 최종 판정이 나와요.</p>' : ""}
     <p class="note">기준: ${R.name} · 이용가능 대출 ${LOAN_LABEL[res.loanType]} · 보수적 감당가능 대출액 ${fmt(res.conservative)}</p>`;
+}
+
+/* ---------- 예시 값 채우기 (빈 화면에서 결과를 먼저 보여주기) ---------- */
+const EXAMPLE_VALUES: Record<string, string> = {
+  seedSelf: "12000", seedSpouse: "8000",
+  grossSelf: "5000", grossSpouse: "4500",
+  netSelf: "4100", netSpouse: "3750",
+  netWorth: "20000", livingCost: "250",
+};
+let showingExample = false;
+
+function fillExample(): void {
+  for (const [id, v] of Object.entries(EXAMPLE_VALUES)) {
+    const node = valued(id);
+    node.value = node.hasAttribute("data-money") ? comma(Number(v)) : v;
+    node.dispatchEvent(new Event("input")); // 금액 힌트(= n억) 갱신 + 재계산
+  }
+  showingExample = true;
+  render();
+  document.querySelector(".summary-card")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 /* ---------- URL 공유 ---------- */
@@ -359,9 +405,17 @@ document.addEventListener("DOMContentLoaded", () => {
   attachTabs();
   renderRegions();
   el("shareBtn").addEventListener("click", copyShareLink);
+  // 빈 상태 요약의 버튼은 render마다 다시 그려지므로 위임으로 처리
+  document.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).closest("[data-fill-example]")) fillExample();
+  });
+  const onEdit = (e: Event): void => {
+    if (e.isTrusted) showingExample = false;
+    render();
+  };
   for (const node of document.querySelectorAll("input, select")) {
-    node.addEventListener("input", render);
-    node.addEventListener("change", render);
+    node.addEventListener("input", onEdit);
+    node.addEventListener("change", onEdit);
   }
   render();
 });

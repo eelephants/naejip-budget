@@ -18,7 +18,8 @@ AI 에이전트(Claude Code 등)가 이 레포에서 작업할 때 지킬 규칙
 ## 웹·SEO
 - 정식 URL은 `https://naejip-budget.site/`이다. 바꾸려면 먼저 `docs/adr/0001-canonical-url.md`를 뒤집는다.
 - **head 메타데이터(title, description, og)에는 연월을 쓰지 않는다.** 본문 기준월만 갱신하므로 head에 날짜가 있으면 검색 결과에 낡은 날짜가 남는다. 테스트가 메인 페이지를 검사한다.
-- 새 페이지를 만들면 canonical, 고유 title·description, 애드센스 스크립트, sitemap 등재, 내부 링크를 함께 넣는다.
+- 새 페이지를 만들면 canonical, 고유 title·description, 애드센스 스크립트, sitemap 등재(lastmod 포함), 내부 링크를 함께 넣는다.
+- 가이드 본문을 고치면 JSON-LD `dateModified`, 본문 `최종 업데이트 <time>`, sitemap `lastmod` 세 곳을 같은 날짜로 갱신한다. 테스트가 일치를 검사한다.
 - 정적 페이지는 `apps/web/public/`에 둔다. 빌드 시 dist로 그대로 복사된다.
 
 ## 배포
