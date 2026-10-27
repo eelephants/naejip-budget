@@ -19,8 +19,12 @@
 - 저장소: eelephants/naejip-budget
 - 일정: 매일 09:30 (KST)
 - 커넥터: Slack, higgsfield.ai
-- 실행 중 설치: ffmpeg, fonts-noto-cjk, pillow, numpy, Poppins 폰트 (프롬프트 0단계)
-- 네트워크: github.com (폰트), *.cloudfront.net (힉스필드 결과), files.slack.com (영상 업로드)
+- 실행 중 설치 (프롬프트 0단계):
+  `apt-get install -y ffmpeg fonts-noto-cjk fonts-noto-cjk-extra && python3 -m pip install pillow numpy`
+  - Black·Medium 굵기는 fonts-noto-cjk-extra에 있다. 빠지면 렌더러가 Bold·Regular로 대체하고 경고를 남긴다
+  - Poppins는 `assets/fonts/`에 들어 있어 내려받지 않는다 (루틴 환경은 GitHub raw가 막혀 있다)
+  - `pip` 대신 `python3 -m pip`를 쓴다. 환경에 파이썬이 둘 있어 `pip`가 다른 쪽에 설치한 적이 있다
+- 네트워크: *.cloudfront.net (힉스필드 결과), files.slack.com (영상 업로드)
 - 시크릿: 없음. 인스타 게시를 자동화할 때만 IG_USER_ID, IG_ACCESS_TOKEN
 
 ## 숏폼 루틴 프롬프트 요약
