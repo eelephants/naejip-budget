@@ -4,7 +4,9 @@ name: Deploy
 on:
   push:
     branches: [main]
+    paths-ignore: ['apps/shorts/**']
   pull_request:
+    paths-ignore: ['apps/shorts/**']
   workflow_dispatch:
 
 concurrency:
