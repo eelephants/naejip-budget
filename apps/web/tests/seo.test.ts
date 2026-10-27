@@ -65,6 +65,29 @@ test("가이드 페이지: sitemap 등재, 고유 canonical·title, 애드센스
   assert.equal(titles.size, 5, "가이드 title 중복");
 });
 
+test("검색어별 계산기 페이지: sitemap·canonical·고유 title·JSON-LD·메인 링크·빠른 계산기 스크립트", () => {
+  const sitemap = readFileSync(join(dist, "sitemap.xml"), "utf8");
+  assert.ok(existsSync(join(dist, "quick.js")), "quick.js 빌드 산출물 없음");
+  const titles = new Set<string>();
+  for (const slug of ["budget", "policy-loans", "dsr", "ltv", "faq"]) {
+    titles.add(readFileSync(join(dist, "guide", `${slug}.html`), "utf8").match(/<title>([^<]+)<\/title>/)![1]);
+  }
+  for (const slug of ["didimdol", "newborn-loan", "mortgage-limit", "dsr"]) {
+    const url = `${SITE}calculator/${slug}.html`;
+    const page = readFileSync(join(dist, "calculator", `${slug}.html`), "utf8");
+    assert.ok(sitemap.includes(`<loc>${url}</loc>`), `${slug} sitemap 누락`);
+    assert.ok(page.includes(`<link rel="canonical" href="${url}" />`), `${slug} canonical`);
+    assert.ok(page.includes("adsbygoogle.js?client=ca-pub-"), `${slug} 애드센스 없음`);
+    assert.ok(page.includes('<script src="/quick.js"></script>') && page.includes("data-quick="), `${slug} 빠른 계산기 없음`);
+    assert.ok(html.includes(`href="calculator/${slug}.html"`), `메인에서 ${slug} 링크 없음`);
+    const types = [...page.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1])["@type"]);
+    assert.deepEqual(types, ["WebApplication", "FAQPage"], `${slug} JSON-LD`);
+    assert.doesNotMatch(page.split("</head>")[0], /20\d\d년|20\d\d\.\d/, `${slug} head에 연월`);
+    titles.add(page.match(/<title>([^<]+)<\/title>/)![1]);
+  }
+  assert.equal(titles.size, 9, "가이드·계산기 title 중복");
+});
+
 test("sitemap 모든 URL에 lastmod, 가이드는 dateModified·본문 업데이트 표기와 일치", () => {
   const sitemap = readFileSync(join(dist, "sitemap.xml"), "utf8");
   const urls = [...sitemap.matchAll(/<url>([\s\S]*?)<\/url>/g)].map((m) => m[1]);

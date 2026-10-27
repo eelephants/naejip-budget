@@ -17,11 +17,10 @@ import {
   parseNum,
   pct,
 } from "@naejip/core";
-import type { BudgetInput, RegionKey, RulesetId, Step8 } from "@naejip/core";
+import type { BudgetInput, RegionKey, Step8 } from "@naejip/core";
+import { ACTIVE_RULESET, attachMoneyInputs } from "./shared.ts";
 
 const EOK = 100_000_000;
-
-const ACTIVE_RULESET: RulesetId = "2026-10"; // 규제 변경 시 코어에 새 룰셋 추가 후 이 키만 교체
 
 /* ---------- DOM helpers ---------- */
 type Valued = HTMLInputElement | HTMLSelectElement;
@@ -385,26 +384,6 @@ async function copyShareLink(): Promise<void> {
     prompt("아래 링크를 복사하세요", url);
   }
   setTimeout(() => (btn.textContent = "입력값 담긴 링크 복사"), 2500);
-}
-
-/* ---------- money input formatting ---------- */
-function attachMoneyInputs(): void {
-  for (const node of document.querySelectorAll<HTMLInputElement>("input[data-money]")) {
-    const hint = document.createElement("span");
-    hint.className = "money-hint";
-    node.insertAdjacentElement("afterend", hint);
-    const update = (): void => {
-      const won = parseMan(node.value);
-      hint.textContent = won > 0 ? "= " + fmt(won) : "";
-    };
-    node.addEventListener("blur", () => {
-      const n = parseFloat(node.value.replace(/[^\d.]/g, ""));
-      node.value = isNaN(n) ? "0" : comma(Math.round(n));
-      update();
-    });
-    node.addEventListener("input", update);
-    update();
-  }
 }
 
 /* ---------- tabs ---------- */
