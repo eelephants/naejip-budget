@@ -64,3 +64,18 @@ test("가이드 페이지: sitemap 등재, 고유 canonical·title, 애드센스
   }
   assert.equal(titles.size, 5, "가이드 title 중복");
 });
+
+test("sitemap 모든 URL에 lastmod, 가이드는 dateModified·본문 업데이트 표기와 일치", () => {
+  const sitemap = readFileSync(join(dist, "sitemap.xml"), "utf8");
+  const urls = [...sitemap.matchAll(/<url>([\s\S]*?)<\/url>/g)].map((m) => m[1]);
+  for (const u of urls) assert.match(u, /<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/, `lastmod 없음: ${u}`);
+  for (const slug of ["", "budget.html", "policy-loans.html", "dsr.html", "ltv.html", "faq.html"]) {
+    const url = `${SITE}guide/${slug}`;
+    const page = readFileSync(join(dist, "guide", slug || "index.html"), "utf8");
+    const lastmod = sitemap.match(new RegExp(`<loc>${url}</loc><lastmod>([^<]+)</lastmod>`))?.[1];
+    const modified = page.match(/"dateModified": "([^"]+)"/)?.[1];
+    assert.ok(modified, `${slug || "index"} dateModified 없음`);
+    assert.equal(lastmod, modified, `${slug || "index"} sitemap lastmod ≠ dateModified`);
+    assert.ok(page.includes(`<time datetime="${modified}">`), `${slug || "index"} 본문 업데이트 표기 불일치`);
+  }
+});
