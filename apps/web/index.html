@@ -35,37 +35,49 @@
   }
 }
 </script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" />
 <link rel="stylesheet" href="style.css" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1677771029100125"
      crossorigin="anonymous"></script>
 </head>
 <body>
-<header class="site-header">
-  <div class="wrap">
-    <p class="brand">🏠 내집마련 예산 계산기</p>
-    <h1>내 연봉으로 살 수 있는 집값, 바로 계산해요</h1>
-    <p class="subtitle">종잣돈과 소득만 넣으면 신생아특례·디딤돌 자격, 대출 한도, 스트레스 DSR까지 계산해요. <b>2026년 10월 현행 규제 기준</b> · 무료 · 가입 없음</p>
+<header class="topbar">
+  <div class="frame topbar-inner">
+    <a class="wordmark" href="/">내집마련 예산 계산기</a>
+    <nav class="topnav" aria-label="사이트"><a href="guide/">대출 가이드</a><a href="guide/faq.html">자주 묻는 질문</a></nav>
   </div>
 </header>
 
-<nav class="tabs wrap" role="tablist">
-  <button class="tab active" data-tab="calc">계산기</button>
-  <button class="tab" data-tab="policy">현행 규제 정리</button>
-  <button class="tab" data-tab="regions">규제지역·토허구역</button>
-  <button class="tab" data-tab="guide">이용 안내</button>
-</nav>
+<div class="frame">
+  <div class="title-row">
+    <h1>내 연봉으로 살 수 있는 집값, 바로 계산해요</h1>
+    <p class="title-sub">종잣돈과 소득만 넣으면 신생아특례·디딤돌 자격, 대출 한도, 스트레스 DSR까지 계산해요. 2026년 10월 현행 규제 기준 · 무료 · 가입 없음</p>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="calc">계산기</button>
+    <button class="tab" data-tab="policy">현행 규제 정리</button>
+    <button class="tab" data-tab="regions">규제지역·토허구역</button>
+    <button class="tab" data-tab="guide">이용 안내</button>
+  </nav>
+</div>
 
-<main class="wrap">
+<main class="frame">
 
 <!-- ============ 계산기 탭 ============ -->
 <section id="tab-calc" class="tab-panel active">
+<div class="calc">
+<div class="steps">
 
   <!-- 1단계 -->
   <section class="card">
     <h2><span class="step-no">1단계</span> 종잣돈과 소득 확인하기</h2>
-    <p class="privacy-note">🔒 입력값은 이 기기 안에서만 계산돼요. 서버로 보내거나 저장하지 않아요.</p>
-    <p class="hint">가계의 종잣돈과, 본인·배우자의 전년도 원천징수영수증 기준 세전/세후 연소득 총액을 입력하세요. <b>단위: 만원</b>
-      <button type="button" class="example-btn" data-fill-example>예시로 채워 보기</button></p>
+    <p class="hint">가계의 종잣돈과, 본인·배우자의 전년도 원천징수영수증 기준 세전/세후 연소득 총액을 입력하세요. 단위는 만원이에요.</p>
+    <div class="step-tools">
+      <button type="button" class="btn-secondary" data-fill-example>예시로 채워 보기</button>
+      <p class="privacy-note">입력값은 이 기기 안에서만 계산돼요. 서버로 보내거나 저장하지 않아요.</p>
+    </div>
     <div class="grid-3">
       <div class="field-group">
         <h3>본인</h3>
@@ -195,7 +207,7 @@
 
   <!-- DSR -->
   <section class="card">
-    <h2><span class="step-no">※</span> DSR 점검</h2>
+    <h2><span class="step-no">마지막</span> DSR 점검</h2>
     <p class="hint">최종 예산상 대출금이 DSR 40% 규제를 충족하는지 점검합니다. 부족분은 신용대출로 가정합니다. (디딤돌·신생아특례는 DSR 대신 DTI 60% 적용)</p>
     <div class="grid-4">
       <label>주담대 금리 (연 %)
@@ -220,13 +232,17 @@
     <p class="note">신용대출 월상환액은 엑셀과 동일하게 (원금÷5 + 원금×금리)÷12 방식으로 계산합니다. DSR이 40%를 초과하면 그만큼 대출이 제한됩니다.</p>
   </section>
 
-  <!-- 최종 요약 -->
-  <section class="card summary-card">
-    <h2>📋 최종 요약</h2>
-    <div id="finalSummary"></div>
-    <button type="button" id="shareBtn" class="share-btn">🔗 입력값 포함 공유 링크 복사</button>
-    <p class="note">링크에 입력값이 그대로 담깁니다. 배우자와 링크를 주고받으며 시나리오를 비교해보세요.</p>
-  </section>
+</div>
+
+  <aside class="rail" id="result" aria-label="계산 결과">
+    <section class="card summary-card">
+      <h2>살 수 있는 집값</h2>
+      <div id="finalSummary"></div>
+      <button type="button" id="shareBtn" class="btn-primary">입력값 담긴 링크 복사</button>
+      <p class="note">링크에 입력값이 그대로 담겨요. 배우자와 주고받으며 시나리오를 비교해 보세요.</p>
+    </section>
+  </aside>
+</div>
 </section>
 
 <!-- ============ 현행 규제 탭 ============ -->
@@ -329,10 +345,15 @@
 </main>
 
 <footer class="site-footer">
-  <div class="wrap">내집마련 예산 계산기 · 현행 규제 2026.10 반영 · 참고용 (계산 결과는 실제 대출 심사와 다를 수 있습니다)<br /><a href="guide/" style="color:inherit">대출 가이드</a> · <a href="guide/faq.html" style="color:inherit">자주 묻는 질문</a> · <a href="privacy.html" style="color:inherit">개인정보처리방침</a></div>
+  <div class="frame">
+    <p>내집마련 예산 계산기 · 현행 규제 2026.10 반영 · 참고용이며 실제 대출 심사 결과와 다를 수 있어요.</p>
+    <p><a href="guide/">대출 가이드</a> · <a href="guide/faq.html">자주 묻는 질문</a> · <a href="privacy.html">개인정보처리방침</a></p>
+  </div>
 </footer>
 
 <!-- src/app.ts + @naejip/core를 esbuild로 번들한 결과 (npm run build) -->
+<a class="result-bar" id="resultBar" href="#result" hidden></a>
+
 <script src="app.js"></script>
 </body>
 </html>
