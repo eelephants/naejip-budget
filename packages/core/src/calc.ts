@@ -135,6 +135,45 @@ function pmt(monthlyRate: number, months: number, principal: number): number {
   return (principal * monthlyRate * k) / (k - 1);
 }
 
+export interface DsrQuickInput {
+  /** 주담대 원금 */
+  loan: number;
+  /** 연 % (스트레스 가산 전) */
+  rate: number;
+  years: number;
+  /** 세전 연소득 */
+  gross: number;
+  existingDebtMonthly: number;
+  /** 수도권·규제지역이면 true, 지방이면 false */
+  metroOrReg: boolean;
+  useStress: boolean;
+}
+
+export interface DsrQuick {
+  /** 스트레스 가산 반영 적용금리(%) */
+  rate: number;
+  mPmt: number;
+  tot: number;
+  ratio: number;
+  pass: boolean;
+  /** 같은 조건에서 DSR 40%를 채우는 주담대 최대 원금 */
+  maxLoan: number;
+}
+
+/** 대출액을 정해 놓고 DSR을 보는 단독 계산 (주담대 + 기존부채, 신용대출 없음) — dsrCheck와 같은 상환식·가산금리 */
+export function computeDsr(q: DsrQuickInput, R: Ruleset): DsrQuick {
+  const rate = q.rate + (q.useStress && R.stress.metro > 0 ? (q.metroOrReg ? R.stress.metro : R.stress.local) : 0);
+  const mr = rate / 100 / 12;
+  const months = q.years * 12;
+  const mPmt = pmt(mr, months, q.loan);
+  const tot = mPmt + q.existingDebtMonthly;
+  const monthlyGross = q.gross / 12;
+  const ratio = monthlyGross > 0 ? tot / monthlyGross : 0;
+  const room = Math.max(monthlyGross * 0.4 - q.existingDebtMonthly, 0);
+  const maxLoan = months <= 0 ? 0 : mr > 0 ? (room * (1 - Math.pow(1 + mr, -months))) / mr : room * months;
+  return { rate, mPmt, tot, ratio, pass: ratio <= 0.4, maxLoan };
+}
+
 export function computeBudget(input: BudgetInput, R: Ruleset): BudgetResult {
   const { seed, gross, net, houses } = input;
   const noHouse = houses === 0;

@@ -13,7 +13,7 @@ AI 에이전트(Claude Code 등)가 이 레포에서 작업할 때 지킬 규칙
 
 ## 규제 데이터
 - 규제 수치는 `packages/core/src/rulesets.ts` 한 곳에서만 관리한다. 새 규제는 기존 룰셋을 고치지 말고 날짜 키 룰셋을 추가한다.
-- 웹의 정책 탭(`apps/web/index.html`)과 가이드 글(`apps/web/public/guide/*.html`)에도 같은 수치가 본문으로 들어 있다. 룰셋을 바꾸면 이 글들도 함께 고친다.
+- 웹의 정책 탭(`apps/web/index.html`), 가이드 글(`apps/web/public/guide/*.html`), 검색어별 계산기 페이지(`apps/web/public/calculator/*.html`)에도 같은 수치가 본문으로 들어 있다. 룰셋을 바꾸면 이 글들도 함께 고친다. 계산기 페이지의 계산 자체는 `apps/web/src/quick.ts`가 코어 엔진으로 한다.
 
 ## 웹·SEO
 - 정식 URL은 `https://naejip-budget.site/`이다. 바꾸려면 먼저 `docs/adr/0001-canonical-url.md`를 뒤집는다.

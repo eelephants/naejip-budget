@@ -17,11 +17,10 @@ import {
   parseNum,
   pct,
 } from "@naejip/core";
-import type { BudgetInput, RegionKey, RulesetId, Step8 } from "@naejip/core";
+import type { BudgetInput, RegionKey, Step8 } from "@naejip/core";
+import { ACTIVE_RULESET, attachMoneyInputs } from "./shared.ts";
 
 const EOK = 100_000_000;
-
-const ACTIVE_RULESET: RulesetId = "2026-10"; // 규제 변경 시 코어에 새 룰셋 추가 후 이 키만 교체
 
 /* ---------- DOM helpers ---------- */
 type Valued = HTMLInputElement | HTMLSelectElement;
@@ -80,10 +79,10 @@ function render(): void {
   const badge = (ok: boolean, label: string): string =>
     `<span class="badge ${ok ? "y" : "n"}">${label} ${ok ? "가능" : "불가"}</span>`;
   const netWorthWarn = !res.netWorthOK
-    ? `<div style="margin-top:6px;color:var(--warn);font-size:12.5px">⚠️ 부부합산 순자산이 기금대출 자산요건(${fmt(R.netWorthCap)})을 초과하여 신생아특례·디딤돌 이용이 제한됩니다.</div>`
+    ? `<p class="notice">부부합산 순자산이 기금대출 자산요건(${fmt(R.netWorthCap)})을 넘어 신생아특례·디딤돌은 이용할 수 없어요.</p>`
     : "";
   el("loanEligibility").innerHTML = `
-    <div>이용가능 대출: <span class="big">${LOAN_LABEL[res.loanType]}</span>
+    <div><span class="lbl">이용가능 대출</span> <span class="big">${LOAN_LABEL[res.loanType]}</span>
       ${res.loanType === "newborn" ? " <small>(주택가격 9억 이하)</small>" : ""}
       ${res.loanType === "didim" ? ` <small>(주택가격 ${res.newlywed || res.children >= 2 ? "6억" : "5억"} 이하)</small>` : ""}
       ${res.loanType === "bogeum" ? " <small>(주택가격 6억 이하)</small>" : ""}
@@ -153,7 +152,7 @@ function render(): void {
   const s5row = (k: RegionKey): string => {
     const s = res.s5[k];
     const partTxt = s.parts ? `<br><small>디딤돌 ${fmt(s.parts.d)} + 보금자리 ${fmt(s.parts.e)}</small>` : "";
-    return `<tr class="${k === "reg" ? "" : "highlight"}">
+    return `<tr>
       <td>${REGION_LABEL[k]}</td><td>${fmt(res.seed)}</td><td class="center">${pct(s.ltv, 0)}</td>
       <td>${fmt(s.ltvCap)}</td><td class="em">${fmt(s.amt)}${partTxt}</td></tr>`;
   };
@@ -189,8 +188,8 @@ function render(): void {
       s.price === 0
         ? '<span class="muted">매매가를 입력하세요</span>'
         : s.ok
-          ? `<span class="ok">✅ 가용 종잣돈+담보대출로 구입 가능</span>`
-          : `⚠️ ${fmt(s.shortfall)} 부족 — 신용대출 등을 검토하되 무리한 대출인지 점검하세요`;
+          ? "가용 종잣돈+담보대출로 구입 가능"
+          : `${fmt(s.shortfall)} 부족 — 신용대출 등을 검토하되 무리한 대출인지 점검하세요`;
     return `<tr>
       <td>${REGION_LABEL[k]}</td><td>${fmt(s.price)}</td>
       <td>${fmt(s.cost)}</td><td>${fmt(s.availSeed)}</td>
@@ -224,69 +223,106 @@ function render(): void {
           ? "-"
           : isPolicyApplied
             ? d.ratio <= 0.6
-              ? "정책대출: DTI 60% 이내 ✅"
-              : "정책대출 DTI 60% 초과 ⚠️"
+              ? "정책대출 DTI 60% 이내"
+              : "정책대출 DTI 60% 초과"
             : d.pass
-              ? "DSR 40% 이내 ✅"
-              : "DSR 40% 초과 — 대출이 제한될 수 있습니다 ⚠️"
+              ? "DSR 40% 이내"
+              : "DSR 40% 초과 — 대출이 제한될 수 있어요"
       }</td></tr>`;
   };
   el("dsrTable").innerHTML = `
     <thead><tr><th>지역</th><th>주담대<br>(최종 대출액)</th><th>주담대 월상환<br><small>적용금리${res.stressOn ? " (스트레스 가산)" : ""}</small></th><th>신용대출<br>(부족분)</th><th>신용 월상환<br><small>적용금리</small></th><th>기존부채<br>월상환</th><th>월 상환 합계</th><th>세전 월소득</th><th>DSR</th><th>판정</th></tr></thead>
     <tbody>${dsrRow("reg")}${dsrRow("non")}</tbody>`;
 
-  // 최종 요약
+  // 최종 요약 (오른쪽 레일) + 휴대폰 하단 결과 바
   const isEmpty = res.seed === 0 && res.gross === 0;
+  const bar = el("resultBar");
   el("shareBtn").hidden = isEmpty;
+  bar.hidden = isEmpty;
   if (isEmpty) {
     el("finalSummary").innerHTML = `<div class="empty-summary">
-      <b>종잣돈과 소득을 넣으면 여기에 살 수 있는 집값이 나와요</b>
-      1단계부터 입력하거나, 예시 값으로 먼저 결과를 확인해 보세요.<br>
-      <button type="button" class="example-btn" data-fill-example>예시로 채워 보기</button>
+      <p>종잣돈과 소득을 넣으면 여기에 규제지역·비규제지역별로 살 수 있는 집값이 나와요.</p>
+      <button type="button" class="btn-secondary" data-fill-example>예시로 채워 보기</button>
     </div>`;
     return;
   }
-  // 매매가 미입력: 8단계 대출이 0이 되므로 6단계 예산 한도(살 수 있는 집값 상한)를 보여준다
-  const capBox = (k: RegionKey): string => {
+
+  // 대출 한도는 네 기준(소득·상품 한도·LTV·매매가 상한) 중 가장 작은 값으로 정해진다 → 어떤 기준이 막았는지 보여준다
+  const limitsOf = (k: RegionKey): { label: string; value: number }[] => {
     const s = res.s6[k];
-    return `<div class="summary-box">
-      <h3>${REGION_LABEL[k]}</h3>
-      <div class="amount">${fmt(res.priceCap === Infinity ? s.budgetBefore : s.budgetCap)}</div>
-      <div class="row"><span>종잣돈</span><b>${fmt(res.seed)}</b></div>
-      <div class="row"><span>대출가능액</span><b>${fmt(s.loanWithCap)}</b></div>
-      <div class="row"><span>적용 대출</span><b>${LOAN_LABEL[res.loanType]}</b></div>
-      <div class="row"><span>기준</span><b>살 수 있는 집값 상한 (부대비용 차감 전)</b></div>
+    const productCap =
+      res.loanType === "newborn" ? R.newbornLimit
+      : res.loanType === "didim" ? res.didimLimit + res.bogeumExtra
+      : res.loanType === "bogeum" ? res.bogeumStandalone
+      : R.capByPrice && (k === "reg" || isChecked("isMetro")) ? 6 * EOK
+      : Infinity;
+    return [
+      { label: "소득으로 감당 가능", value: res.conservative },
+      { label: res.loanType === "general" ? "주담대 한도" : `${LOAN_LABEL[res.loanType]} 한도`, value: productCap },
+      { label: `LTV ${pct(s.ltv, 0)}`, value: s.ltvCap },
+      { label: "정책대출 매매가 상한", value: res.priceCap === Infinity ? Infinity : res.priceCap * s.ltv },
+    ];
+  };
+  const scale = Math.max(
+    ...(["reg", "non"] as const).flatMap((k) => limitsOf(k).map((l) => l.value)).filter((v) => v !== Infinity),
+    1,
+  );
+  const ladder = (k: RegionKey): string => {
+    const rows = limitsOf(k);
+    const min = Math.min(...rows.map((r) => r.value));
+    const bind = rows.findIndex((r) => r.value === min);
+    return `<div class="ladder">
+      <p class="ladder-cap">네 기준 중 가장 작은 값이 대출 한도예요. 지금은 <b>${rows[bind].label}</b>에서 막혀요.</p>
+      ${rows
+        .map(
+          (r, i) => `<div class="ladder-row${i === bind ? " bind" : ""}">
+        <span class="ladder-lbl">${r.label}</span>
+        <span class="ladder-val num">${r.value === Infinity ? "제한 없음" : fmt(r.value)}</span>
+        <span class="ladder-track">${r.value === Infinity ? "" : `<span class="ladder-fill" style="width:${Math.max((r.value / scale) * 100, 0.5).toFixed(1)}%"></span>`}</span>
+      </div>`,
+        )
+        .join("")}
     </div>`;
   };
-  const sumBox = (k: RegionKey): string => {
-    const s = res.s8[k];
+
+  const figureOf = (k: RegionKey): number =>
+    res.s8[k].price === 0 ? (res.priceCap === Infinity ? res.s6[k].budgetBefore : res.s6[k].budgetCap) : res.s8[k].budget;
+
+  const answer = (k: RegionKey): string => {
+    const s8 = res.s8[k];
+    const s6 = res.s6[k];
+    const head = `<div class="answer-head"><h3>${REGION_LABEL[k]}</h3>${
+      k === "non" ? `<span class="answer-scope">${isChecked("isMetro") ? "수도권" : "지방"}</span>` : `<span class="answer-scope">서울 전역 등</span>`
+    }</div>`;
+    if (s8.price === 0) {
+      return `<div class="answer">${head}
+        <p class="answer-fig num">${fmt(figureOf(k))}</p>
+        <p class="answer-sub">종잣돈 ${fmt(res.seed)} + 대출 ${fmt(s6.loanWithCap)} · ${LOAN_LABEL[res.loanType]}</p>
+        ${ladder(k)}
+      </div>`;
+    }
     const d = res.dsr[k];
-    if (s.price === 0) return capBox(k);
-    return `<div class="summary-box">
-      <h3>${REGION_LABEL[k]}</h3>
-      <div class="amount">${fmt(s.budget)}</div>
-      <div class="row"><span>종잣돈</span><b>${fmt(res.seed)}</b></div>
-      <div class="row"><span>부대비용(추정)</span><b>−${fmt(s.cost)}</b></div>
-      <div class="row"><span>최종 대출가능액</span><b>${fmt(s.loan)}</b></div>
-      <div class="row"><span>적용 대출</span><b>${appliedLabel(s)}</b></div>
-      <div class="row"><span>희망 매매가</span><b>${fmt(s.price)}</b></div>
-      <div class="row"><span>DSR</span><b>${pct(d.ratio)}</b></div>
-      ${
-        s.price === 0
-          ? ""
-          : `<div class="verdict ${s.ok ? "ok" : "bad"}">${
-              s.ok
-                ? "이 집, 가용 종잣돈+담보대출로 살 수 있어요!"
-                : `예산이 ${fmt(s.shortfall)} 부족해요. 매매가를 낮추거나 종잣돈을 더 모아야 해요.`
-            }</div>`
-      }
+    return `<div class="answer">${head}
+      <p class="answer-fig num">${fmt(s8.budget)}</p>
+      <p class="answer-sub">매매가 ${fmt(s8.price)} 집 기준 최종 예산 · ${appliedLabel(s8)}</p>
+      <dl class="answer-rows">
+        <div><dt>가용 종잣돈</dt><dd class="num">${fmt(s8.availSeed)}</dd></div>
+        <div><dt>부대비용(추정)</dt><dd class="num">−${fmt(s8.cost)}</dd></div>
+        <div><dt>최종 대출가능액</dt><dd class="num">${fmt(s8.loan)}</dd></div>
+        <div><dt>DSR</dt><dd class="num">${pct(d.ratio)}</dd></div>
+      </dl>
+      <p class="verdict ${s8.ok ? "ok" : "bad"}">${
+        s8.ok ? "이 집은 가용 종잣돈과 담보대출로 살 수 있어요." : `예산이 ${fmt(s8.shortfall)} 부족해요. 매매가를 낮추거나 종잣돈을 더 모아야 해요.`
+      }</p>
     </div>`;
   };
+
   const noPrice = res.s8.reg.price === 0 || res.s8.non.price === 0;
-  el("finalSummary").innerHTML = `<div class="summary-grid">${sumBox("reg")}${sumBox("non")}</div>
-    ${showingExample ? '<p class="note"><b>예시 값으로 계산한 결과예요.</b> 1단계부터 내 숫자로 바꿔 보세요.</p>' : ""}
+  el("finalSummary").innerHTML = `${answer("reg")}${answer("non")}
+    ${showingExample ? '<p class="note note-example">예시 값으로 계산한 결과예요. 1단계부터 내 숫자로 바꿔 보세요.</p>' : ""}
     ${noPrice ? '<p class="note">7~8단계에 사고 싶은 집의 매매가를 넣으면 부대비용과 DSR까지 반영한 최종 판정이 나와요.</p>' : ""}
     <p class="note">기준: ${R.name} · 이용가능 대출 ${LOAN_LABEL[res.loanType]} · 보수적 감당가능 대출액 ${fmt(res.conservative)}</p>`;
+  bar.innerHTML = `<span class="result-bar-fig"><span>규제지역 <b class="num">${fmt(figureOf("reg"))}</b></span><span>비규제지역 <b class="num">${fmt(figureOf("non"))}</b></span></span><span class="result-bar-go">결과 보기</span>`;
 }
 
 /* ---------- 예시 값 채우기 (빈 화면에서 결과를 먼저 보여주기) ---------- */
@@ -306,7 +342,7 @@ function fillExample(): void {
   }
   showingExample = true;
   render();
-  document.querySelector(".summary-card")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  el("result").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 /* ---------- URL 공유 ---------- */
@@ -343,31 +379,11 @@ async function copyShareLink(): Promise<void> {
   const btn = el("shareBtn");
   try {
     await navigator.clipboard.writeText(url);
-    btn.textContent = "✅ 복사됨! 링크를 공유하세요";
+    btn.textContent = "복사했어요. 붙여넣어 공유하세요";
   } catch {
     prompt("아래 링크를 복사하세요", url);
   }
-  setTimeout(() => (btn.textContent = "🔗 입력값 포함 공유 링크 복사"), 2500);
-}
-
-/* ---------- money input formatting ---------- */
-function attachMoneyInputs(): void {
-  for (const node of document.querySelectorAll<HTMLInputElement>("input[data-money]")) {
-    const hint = document.createElement("span");
-    hint.className = "money-hint";
-    node.insertAdjacentElement("afterend", hint);
-    const update = (): void => {
-      const won = parseMan(node.value);
-      hint.textContent = won > 0 ? "= " + fmt(won) : "";
-    };
-    node.addEventListener("blur", () => {
-      const n = parseFloat(node.value.replace(/[^\d.]/g, ""));
-      node.value = isNaN(n) ? "0" : comma(Math.round(n));
-      update();
-    });
-    node.addEventListener("input", update);
-    update();
-  }
+  setTimeout(() => (btn.textContent = "입력값 담긴 링크 복사"), 2500);
 }
 
 /* ---------- tabs ---------- */
@@ -379,6 +395,7 @@ function attachTabs(): void {
       btn.classList.add("active");
       const name = btn.dataset.tab;
       if (name) el("tab-" + name).classList.add("active");
+      document.body.dataset.tab = name ?? ""; // 하단 결과 바는 계산기 탭에서만
     });
   }
 }
@@ -418,4 +435,10 @@ document.addEventListener("DOMContentLoaded", () => {
     node.addEventListener("change", onEdit);
   }
   render();
+  // 휴대폰 하단 결과 바: 결과 카드가 화면에 보이면 숨긴다
+  const rail = el("result");
+  new IntersectionObserver(([e]) => document.body.classList.toggle("result-visible", e.isIntersecting), {
+    threshold: 0,
+    rootMargin: "0px 0px 240px 0px", // 결과 카드가 들어오기 직전에 숨겨 숫자를 가리지 않게
+  }).observe(rail);
 });
