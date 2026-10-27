@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>주담대 한도 계산기: LTV·규제지역·집값별 대출 한도 | 내집마련 예산 계산기</title>
+<meta name="description" content="종잣돈·소득·매매가로 규제지역(LTV 40%)과 비규제지역(LTV 70%)의 주택담보대출 한도, 집값 구간별 한도 6억·4억·2억, 부족 금액을 계산해요." />
+<link rel="canonical" href="https://naejip-budget.site/calculator/mortgage-limit.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="내집마련 예산 계산기" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:url" content="https://naejip-budget.site/calculator/mortgage-limit.html" />
+<meta property="og:title" content="주담대 한도 계산기: LTV·규제지역·집값별 대출 한도" />
+<meta property="og:description" content="종잣돈·소득·매매가로 규제지역(LTV 40%)과 비규제지역(LTV 70%)의 주택담보대출 한도, 집값 구간별 한도 6억·4억·2억, 부족 금액을 계산해요." />
+<meta property="og:image" content="https://naejip-budget.site/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "주담대 한도 계산기",
+  "description": "종잣돈·소득·매매가로 규제지역(LTV 40%)과 비규제지역(LTV 70%)의 주택담보대출 한도, 집값 구간별 한도 6억·4억·2억, 부족 금액을 계산해요.",
+  "url": "https://naejip-budget.site/calculator/mortgage-limit.html",
+  "inLanguage": "ko-KR",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "KRW"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "내집마련 예산 계산기",
+    "url": "https://naejip-budget.site/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "규제지역은 어디인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "서울 25개 구 전역과 경기 과천·광명·성남 분당·수정·중원 등이 조정대상지역·투기과열지구예요. 전체 목록은 메인 계산기의 규제지역 탭에 정리해 두었어요."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "계산기 한도가 은행 상담과 다른 이유는요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "은행은 신용점수와 내부 기준, 금리 유형별 스트레스 금리 적용폭까지 봐요. 계산기는 공개된 규제로 상한을 추정하는 참고용이에요."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "수도권·규제지역에 집을 사면 꼭 들어가 살아야 하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "네. 수도권·규제지역 주담대는 6개월 안에 전입해야 하고, 토지거래허가구역은 2년 실거주 의무가 있어 전세를 끼고 사기 어려워요."
+      }
+    }
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" />
+<link rel="stylesheet" href="/style.css" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1677771029100125" crossorigin="anonymous"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <p class="subtitle" style="margin:0 0 6px"><a href="/" style="color:inherit">내집마련 예산 계산기</a> › 계산기</p>
+    <h1>주담대 한도 계산기</h1>
+    <nav class="guide-nav" aria-label="계산기"><a href="/calculator/didimdol.html">디딤돌대출</a><a href="/calculator/newborn-loan.html">신생아특례대출</a><a href="/calculator/mortgage-limit.html" aria-current="page">주담대 한도</a><a href="/calculator/dsr.html">DSR</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+<section class="card article">
+    <p class="updated">최종 업데이트 <time datetime="2026-10-28">2026년 10월 28일</time> · 2026년 10월 현행 규제 기준</p>
+    <p class="lead">같은 집이라도 규제지역인지, 집값이 얼마인지에 따라 주택담보대출 한도가 크게 달라져요. 종잣돈과 소득, 사려는 집의 매매가를 넣으면 규제지역과 비규제지역의 대출 한도를 나란히 보여줘요. 정책대출 대상이면 정책대출 기준으로 계산해요.</p>
+    <form class="quick" data-quick="limit" data-preset="{&quot;houses&quot;: &quot;0&quot;}">
+      <div class="grid-2">
+      <label>종잣돈 (만원) <input type="text" inputmode="numeric" name="seed" value="0" data-money><small>지금 집값에 넣을 수 있는 현금</small></label>
+      <label>부부합산 세전 연소득 (만원) <input type="text" inputmode="numeric" name="gross" value="0" data-money><small>원천징수영수증 기준</small></label>
+      <label>부부합산 월 실수령액 (만원) <input type="text" inputmode="numeric" name="netMonthly" value="0" data-money><small>상환 여력 계산용</small></label>
+      <label>월 생활비 (만원) <input type="text" inputmode="numeric" name="living" value="0" data-money></label>
+      <label>사려는 집 매매가 (만원) <input type="text" inputmode="numeric" name="price" value="0" data-money><small>비워 두면 최대 한도만 계산해요</small></label>
+      </div>
+    </form>
+    <div id="quickResult" class="quick-result" aria-live="polite"></div>
+    <a id="quickFull" class="cta" href="/">8단계 전체 계산기로 이어서 보기</a>
+    <p class="note">입력값은 이 기기 안에서만 계산돼요. 서버로 보내거나 저장하지 않아요.</p>
+  </section>
+
+  <section class="card article">
+    <h2>주담대 한도를 정하는 규제</h2>
+    <div class="table-scroll"><table>
+  <thead><tr><th>구분 (무주택·처분조건부 1주택)</th><th>규제지역</th><th>비규제지역</th></tr></thead>
+  <tbody>
+    <tr><td>일반 주담대 LTV</td><td>40%</td><td>70%</td></tr>
+    <tr><td>정책대출 LTV</td><td>70%</td><td>70%</td></tr>
+  </tbody></table></div>
+  <div class="table-scroll"><table>
+  <thead><tr><th>주택 가격(시가), 수도권·규제지역</th><th>주담대 최대 한도</th></tr></thead>
+  <tbody>
+    <tr><td>15억원 이하</td><td>6억원</td></tr>
+    <tr><td>15억원 초과 ~ 25억원 이하</td><td>4억원</td></tr>
+    <tr><td>25억원 초과</td><td>2억원</td></tr>
+  </tbody></table></div>
+  <ul>
+    <li>LTV 한도와 집값별 한도 외에 <b>소득으로 갚을 수 있는 금액</b>과 <b>DSR 40%</b>도 함께 넘지 않아야 해요.</li>
+    <li>2주택 이상 보유 세대는 규제지역·수도권에서 추가로 사는 집에 주담대를 받을 수 없어요.</li>
+  </ul>
+  </section>
+
+  <section class="card article">
+    <h2>자주 묻는 질문</h2>
+    <details><summary>규제지역은 어디인가요?</summary><p>서울 25개 구 전역과 경기 과천·광명·성남 분당·수정·중원 등이 조정대상지역·투기과열지구예요. 전체 목록은 메인 계산기의 규제지역 탭에 정리해 두었어요.</p></details>
+    <details><summary>계산기 한도가 은행 상담과 다른 이유는요?</summary><p>은행은 신용점수와 내부 기준, 금리 유형별 스트레스 금리 적용폭까지 봐요. 계산기는 공개된 규제로 상한을 추정하는 참고용이에요.</p></details>
+    <details><summary>수도권·규제지역에 집을 사면 꼭 들어가 살아야 하나요?</summary><p>네. 수도권·규제지역 주담대는 6개월 안에 전입해야 하고, 토지거래허가구역은 2년 실거주 의무가 있어 전세를 끼고 사기 어려워요.</p></details>
+  </section>
+
+  <section class="card article">
+    <h2>함께 보면 좋은 글</h2>
+    <ul class="guide-list">
+      <li><a href="/guide/ltv.html"><b>LTV와 주담대 한도 규제 정리</b><span>지역·대출별 LTV와 집값 구간별 한도를 정리했어요.</span></a></li>
+      <li><a href="/calculator/dsr.html"><b>DSR 계산기</b><span>이 대출의 원리금이 DSR 40% 안에 들어오는지 확인해요.</span></a></li>
+      <li><a href="/guide/budget.html"><b>내 집 마련 예산 계산하는 법 8단계</b><span>살 수 있는 집값이 정해지는 순서를 설명해요.</span></a></li>
+    </ul>
+    <p class="note">※ 이 계산기는 공개된 규제 기준으로 상한을 추정하는 참고용 도구예요. 실제 대출 가능 여부·한도·금리는 개인 신용과 금융기관 심사, 규제 변경에 따라 달라지니 대출 전 은행과 <a href="https://nhuf.molit.go.kr" target="_blank" rel="noopener">주택도시기금포털</a>에서 최신 기준을 확인하세요.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap"><a href="/" style="color:inherit">계산기</a> · <a href="/guide/" style="color:inherit">가이드</a> · <a href="/privacy.html" style="color:inherit">개인정보처리방침</a></div>
+</footer>
+<script src="/quick.js"></script>
+</body>
+</html>

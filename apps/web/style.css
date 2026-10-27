@@ -337,3 +337,16 @@ main.wrap > .card { margin: var(--gap) 0 0; max-width: 760px; }
   .site-header h1 { font-size: 24px; }
   .article { padding: 24px 16px; }
 }
+
+/* ---- 검색어별 계산기 페이지의 빠른 계산기 ---- */
+.quick { margin-top: 24px; }
+.quick-result { margin-top: 24px; border-top: 1px solid var(--rule); }
+.quick-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; }
+.quick-pair .answer, .quick-result > .answer { border-bottom: 0; }
+.article .quick-result p { line-height: 1.5; }
+.quick-verdict { margin: 16px 0 0; font-size: 15px; font-weight: 500; }
+.quick-verdict.ok { color: var(--positive); }
+.quick-verdict.bad { color: var(--negative); }
+.quick-empty { margin: 20px 0 0; color: var(--muted); }
+.quick-result + .cta { margin-top: 16px; }
+@media (max-width: 640px) { .quick-pair { grid-template-columns: 1fr; } }
