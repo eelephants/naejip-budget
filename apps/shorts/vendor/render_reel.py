@@ -11,7 +11,7 @@ content.json 스키마는 SKILL.md 참조.
 숫자·텍스트를 코드로 그리기 때문에 생성형 모델과 달리 수치가 절대 틀어지지 않는다.
 """
 
-import argparse, json, subprocess, sys
+import argparse, json, os, subprocess, sys
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
@@ -33,26 +33,57 @@ THEME = {
     'rule': (38, 44, 55), 'card': (24, 30, 40),
 }
 
-KR_BLACK = '/usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc'
-KR_MED   = '/usr/share/fonts/opentype/noto/NotoSansCJK-Medium.ttc'
-KR_REG   = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
-NUM_BOLD = '/usr/share/fonts/truetype/google-fonts/Poppins-Bold.ttf'
-NUM_MED  = '/usr/share/fonts/truetype/google-fonts/Poppins-Medium.ttf'
+# Poppins는 저장소에 들어 있다(assets/fonts, OFL). Noto CJK는 시스템 폰트를 쓴다.
+# 우분투 fonts-noto-cjk에는 Regular·Bold만 있고 Black·Medium은 fonts-noto-cjk-extra에 있다.
+BUNDLED = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'assets', 'fonts')
+FONT_DIRS = [
+    BUNDLED,
+    '/usr/share/fonts/opentype/noto',
+    '/usr/share/fonts/truetype/google-fonts',
+    os.path.expanduser('~/Library/Fonts'),
+    '/Library/Fonts',
+] + [d for d in os.environ.get('SHORTS_FONT_DIRS', '').split(os.pathsep) if d]
+
+# 굵기마다 앞에서부터 찾는다. 첫 후보가 없으면 가까운 굵기로 대체하고 경고를 한 번 남긴다.
+KR_FILES = {
+    'black':   ['NotoSansCJK-Black.ttc', 'NotoSansCJK-Bold.ttc'],
+    'medium':  ['NotoSansCJK-Medium.ttc', 'NotoSansCJK-Regular.ttc'],
+    'regular': ['NotoSansCJK-Regular.ttc'],
+}
+NUM_FILES = {
+    'bold':   ['Poppins-Bold.ttf'],
+    'medium': ['Poppins-Medium.ttf'],
+}
+
+_paths = {}
+def font_path(kind, weight):
+    key = (kind, weight)
+    if key not in _paths:
+        names = (KR_FILES if kind == 'kr' else NUM_FILES)[weight]
+        for i, name in enumerate(names):
+            hit = next((os.path.join(d, name) for d in FONT_DIRS if os.path.isfile(os.path.join(d, name))), None)
+            if hit:
+                if i:
+                    print(f'[폰트] {names[0]} 없음 → {name}로 대체', file=sys.stderr)
+                _paths[key] = hit
+                break
+        else:
+            sys.exit(f'[폰트] {" / ".join(names)} 을(를) 찾지 못했습니다. 찾은 위치: {FONT_DIRS}')
+    return _paths[key]
 
 _fc = {}
 def kr(size, weight='black'):
     """한글 본문/제목. Poppins에는 '→' 글리프가 없으므로 화살표도 이 폰트로 그린다."""
     key = ('kr', size, weight)
     if key not in _fc:
-        path = {'black': KR_BLACK, 'medium': KR_MED, 'regular': KR_REG}[weight]
-        _fc[key] = ImageFont.truetype(path, size, index=1)   # index 1 = KR
+        _fc[key] = ImageFont.truetype(font_path('kr', weight), size, index=1)   # index 1 = KR
     return _fc[key]
 
 def num(size, weight='bold'):
     """숫자 전용. 한글 폰트의 숫자보다 좁고 강해서 수치가 눈에 박힌다."""
     key = ('num', size, weight)
     if key not in _fc:
-        _fc[key] = ImageFont.truetype(NUM_BOLD if weight == 'bold' else NUM_MED, size)
+        _fc[key] = ImageFont.truetype(font_path('num', 'bold' if weight == 'bold' else 'medium'), size)
     return _fc[key]
 
 def color(name):

@@ -13,11 +13,18 @@ AI는 첫 4초의 배경만 만들고, 숫자와 글자는 전부 코드로 그�
 ## 실행
 
 ```bash
-pip install pillow numpy          # ffmpeg, Noto Sans CJK KR, Poppins 폰트 필요
+python3 -m pip install pillow numpy   # ffmpeg, Noto Sans CJK(Black·Medium·Regular) 필요. Poppins는 assets/fonts에 포함
 python3 run.py                    # 유튜브 쇼츠용
 python3 run.py --platform instagram --out out/reels.mp4
 python3 run.py --narration voice.m4a --bgm bgm.mp3
 ```
+
+## 폰트
+
+렌더러는 `assets/fonts/` → `/usr/share/fonts/opentype/noto` → `/usr/share/fonts/truetype/google-fonts` → `~/Library/Fonts` → `/Library/Fonts` 순서로 찾는다. 다른 폴더는 `SHORTS_FONT_DIRS`(경로 구분자 `:`)로 더한다.
+
+- Poppins Bold·Medium: 저장소에 포함 (SIL OFL 1.1, `assets/fonts/OFL.txt`)
+- Noto Sans CJK: 우분투는 `fonts-noto-cjk`(Regular·Bold)와 `fonts-noto-cjk-extra`(Black·Medium)를 함께 설치한다. Black·Medium이 없으면 Bold·Regular로 대체하고 경고를 남긴다
 
 ## 매일 바꾸는 파일
 
