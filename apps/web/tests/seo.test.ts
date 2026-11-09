@@ -10,6 +10,7 @@ const SITE = "https://naejip-budget.site/";
 const html = readFileSync(join(dist, "index.html"), "utf8");
 const attr = (sel: RegExp): string | undefined => html.match(sel)?.[1];
 const meta = (k: string): string | undefined => attr(new RegExp(`<meta (?:property|name)="${k}" content="([^"]+)"`));
+const GUIDES = ["budget", "policy-loans", "dsr", "ltv", "repayment", "rate-types", "extra-costs", "funding-schedule", "jeonse-vs-buy", "faq"];
 
 test("canonical은 쿼리 없는 정식 URL", () => {
   assert.equal(attr(/<link rel="canonical" href="([^"]+)"/), SITE);
@@ -53,7 +54,7 @@ test("애드센스 스크립트와 ads.txt의 게시자 ID가 일치", () => {
 test("가이드 페이지: sitemap 등재, 고유 canonical·title, 애드센스·메인 링크", () => {
   const sitemap = readFileSync(join(dist, "sitemap.xml"), "utf8");
   const titles = new Set<string>();
-  for (const slug of ["budget", "policy-loans", "dsr", "ltv", "faq"]) {
+  for (const slug of GUIDES) {
     const url = `${SITE}guide/${slug}.html`;
     const page = readFileSync(join(dist, "guide", `${slug}.html`), "utf8");
     assert.ok(sitemap.includes(`<loc>${url}</loc>`), `${slug} sitemap 누락`);
@@ -62,14 +63,14 @@ test("가이드 페이지: sitemap 등재, 고유 canonical·title, 애드센스
     assert.ok(html.includes(`href="guide/${slug}.html"`), `메인에서 ${slug} 링크 없음`);
     titles.add(page.match(/<title>([^<]+)<\/title>/)![1]);
   }
-  assert.equal(titles.size, 5, "가이드 title 중복");
+  assert.equal(titles.size, GUIDES.length, "가이드 title 중복");
 });
 
 test("검색어별 계산기 페이지: sitemap·canonical·고유 title·JSON-LD·메인 링크·빠른 계산기 스크립트", () => {
   const sitemap = readFileSync(join(dist, "sitemap.xml"), "utf8");
   assert.ok(existsSync(join(dist, "quick.js")), "quick.js 빌드 산출물 없음");
   const titles = new Set<string>();
-  for (const slug of ["budget", "policy-loans", "dsr", "ltv", "faq"]) {
+  for (const slug of GUIDES) {
     titles.add(readFileSync(join(dist, "guide", `${slug}.html`), "utf8").match(/<title>([^<]+)<\/title>/)![1]);
   }
   for (const slug of ["didimdol", "newborn-loan", "mortgage-limit", "dsr"]) {
@@ -85,14 +86,14 @@ test("검색어별 계산기 페이지: sitemap·canonical·고유 title·JSON-L
     assert.doesNotMatch(page.split("</head>")[0], /20\d\d년|20\d\d\.\d/, `${slug} head에 연월`);
     titles.add(page.match(/<title>([^<]+)<\/title>/)![1]);
   }
-  assert.equal(titles.size, 9, "가이드·계산기 title 중복");
+  assert.equal(titles.size, GUIDES.length + 4, "가이드·계산기 title 중복");
 });
 
 test("sitemap 모든 URL에 lastmod, 가이드는 dateModified·본문 업데이트 표기와 일치", () => {
   const sitemap = readFileSync(join(dist, "sitemap.xml"), "utf8");
   const urls = [...sitemap.matchAll(/<url>([\s\S]*?)<\/url>/g)].map((m) => m[1]);
   for (const u of urls) assert.match(u, /<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/, `lastmod 없음: ${u}`);
-  for (const slug of ["", "budget.html", "policy-loans.html", "dsr.html", "ltv.html", "faq.html"]) {
+  for (const slug of ["", ...GUIDES.map((g) => `${g}.html`)]) {
     const url = `${SITE}guide/${slug}`;
     const page = readFileSync(join(dist, "guide", slug || "index.html"), "utf8");
     const lastmod = sitemap.match(new RegExp(`<loc>${url}</loc><lastmod>([^<]+)</lastmod>`))?.[1];
@@ -100,5 +101,29 @@ test("sitemap 모든 URL에 lastmod, 가이드는 dateModified·본문 업데이
     assert.ok(modified, `${slug || "index"} dateModified 없음`);
     assert.equal(lastmod, modified, `${slug || "index"} sitemap lastmod ≠ dateModified`);
     assert.ok(page.includes(`<time datetime="${modified}">`), `${slug || "index"} 본문 업데이트 표기 불일치`);
+  }
+});
+
+test("소개·문의·이용약관 페이지: sitemap 등재, 고유 canonical·title, 애드센스, 메인 하단 링크", () => {
+  const sitemap = readFileSync(join(dist, "sitemap.xml"), "utf8");
+  const titles = new Set<string>();
+  for (const slug of ["about", "contact", "terms"]) {
+    const url = `${SITE}${slug}.html`;
+    const page = readFileSync(join(dist, `${slug}.html`), "utf8");
+    assert.ok(sitemap.includes(`<loc>${url}</loc>`), `${slug} sitemap 누락`);
+    assert.ok(page.includes(`<link rel="canonical" href="${url}" />`), `${slug} canonical`);
+    assert.ok(page.includes("adsbygoogle.js?client=ca-pub-"), `${slug} 애드센스 없음`);
+    assert.ok(html.includes(`href="${slug}.html"`), `메인에서 ${slug} 링크 없음`);
+    titles.add(page.match(/<title>([^<]+)<\/title>/)![1]);
+  }
+  assert.equal(titles.size, 3, "소개·문의·약관 title 중복");
+});
+
+test("가이드 목차가 모든 가이드를 링크하고, 모든 가이드 하단에 소개·문의·약관 링크", () => {
+  const index = readFileSync(join(dist, "guide", "index.html"), "utf8");
+  for (const slug of GUIDES) {
+    assert.ok(index.includes(`href="/guide/${slug}.html"`), `목차에 ${slug} 없음`);
+    const page = readFileSync(join(dist, "guide", `${slug}.html`), "utf8");
+    for (const p of ["about", "contact", "terms", "privacy"]) assert.ok(page.includes(`href="/${p}.html"`), `${slug} 하단에 ${p} 링크 없음`);
   }
 });
