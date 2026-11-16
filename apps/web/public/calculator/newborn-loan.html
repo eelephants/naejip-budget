@@ -65,6 +65,22 @@
         "@type": "Answer",
         "text": "자격 판정은 부부합산 세전 연소득이에요. 월 실수령액과 생활비는 실제로 갚을 수 있는 금액을 계산하는 데만 써요."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "종잣돈이 얼마 있어야 한도 4억원을 다 쓰나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "LTV 70%이므로 집값의 30%를 종잣돈으로 내야 해요. 4억원을 빌리려면 종잣돈이 약 1억 7,143만원 필요하고, 이때 살 수 있는 집값은 약 5억 7,143만원이에요. 부대비용은 별도예요."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "소득이 기준을 넘으면 어떻게 되나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "계산기는 다음 순서인 디딤돌, 보금자리론, 일반 주담대 자격을 차례로 확인해 이용할 수 있는 대출로 다시 계산해요. 일반 주담대가 되면 규제지역 LTV가 40%로 낮아져 결과가 크게 줄 수 있어요."
+      }
     }
   ]
 }
@@ -86,7 +102,7 @@
 
 <main class="wrap">
 <section class="card article">
-    <p class="updated">최종 업데이트 <time datetime="2026-10-28">2026년 10월 28일</time> · 2026년 10월 현행 규제 기준</p>
+    <p class="updated">최종 업데이트 <time datetime="2026-11-09">2026년 11월 9일</time> · 2026년 10월 현행 규제 기준</p>
     <p class="lead">신생아특례대출은 2023년 1월 1일 이후 아이를 낳은 무주택 가구가 받을 수 있는 정책 주택담보대출이에요. 소득과 순자산을 넣으면 대상인지와 한도, 살 수 있는 집값이 바로 나와요.</p>
     <form class="quick" data-quick="newborn" data-preset="{&quot;houses&quot;: &quot;0&quot;, &quot;bornAfter23&quot;: true}">
       <div class="grid-2">
@@ -118,10 +134,39 @@
   </section>
 
   <section class="card article">
+    <h2>계산 예시: 무엇이 한도를 막는지 보기</h2>
+    <p>신생아특례는 한도가 4억원으로 크지만, 실제 대출은 한도·LTV·상환 여력 중 가장 작은 값이에요. 세 가구를 이 계산기에 넣어 보면 막히는 지점이 각각 달라요.</p>
+    <div class="table-scroll"><table>
+  <thead><tr><th>가구</th><th>조건</th><th>대출</th><th>살 수 있는 집값</th><th>막힌 곳</th></tr></thead>
+  <tbody>
+    <tr><td>A. 맞벌이</td><td>부부합산 1억 3,000만원, 실수령 월 850만원, 생활비 350만원, 종잣돈 2억원, 순자산 3억원</td><td>4억원</td><td>6억원</td><td>상품 한도 4억원</td></tr>
+    <tr><td>B. 외벌이</td><td>연소득 6,000만원, 실수령 월 410만원, 생활비 230만원, 종잣돈 8,000만원, 순자산 1억원</td><td>1억 8,667만원</td><td>2억 6,667만원</td><td>LTV 70%(종잣돈)</td></tr>
+    <tr><td>C. 고소득 맞벌이</td><td>부부합산 2억 1,000만원, 실수령 월 1,300만원, 생활비 450만원, 종잣돈 3억원</td><td colspan="2">신생아특례 대상 아님 → 일반 주담대 (아래 설명)</td><td>소득 기준</td></tr>
+  </tbody></table></div>
+    <p><b>A 가구</b>는 LTV로는 약 4억 6,667만원, 상환 여력(월 500만원 × 150)으로는 7억 5,000만원까지 가능하지만 상품 한도 4억원에서 멈춰요. 종잣돈 2억원을 더하면 6억원이에요. 매매가 상한 9억원까지는 여유가 있으니, 더 비싼 집을 보려면 종잣돈을 늘리는 수밖에 없어요.</p>
+    <p><b>B 가구</b>는 디딤돌 자격도 되지만 혜택이 큰 신생아특례가 먼저 적용돼요. 그런데 종잣돈 8,000만원으로는 LTV 70% 기준 대출이 약 1억 8,667만원까지예요. 한도 4억원을 다 쓰려면 종잣돈이 약 1억 7,143만원 필요해요. 이런 가구는 한도보다 종잣돈 모으기가 먼저예요.</p>
+    <p><b>C 가구</b>는 부부합산 소득이 맞벌이 완화 기준 2억원을 넘어 일반 주담대로 계산돼요. 규제지역에서는 LTV 40%라 종잣돈 3억원으로 대출 2억원, 집값 5억원이 상한이고, 수도권 비규제지역은 LTV 70%여도 시가 15억원 이하 주택의 한도 6억원에 걸려 집값 9억원이 상한이에요. 소득이 기준을 조금 넘는 것만으로 결과가 크게 달라지니 원천징수영수증상 금액을 정확히 넣어 보세요.</p>
+  </section>
+
+  <section class="card article">
+    <h2>이 계산기는 이렇게 계산해요</h2>
+    <ol>
+      <li><b>자격 확인</b>: '23.1.1 이후 출생아가 있는 무주택 가구인지, 부부합산 소득이 맞벌이 완화 기준 2억원 이하인지, 순자산이 5억 1,100만원 이하인지 봐요.</li>
+      <li><b>상품 한도</b>: 4억원을 적용해요. 매매가 9억원 이하 주택만 대상이에요.</li>
+      <li><b>소득으로 갚을 수 있는 금액</b>: 월 실수령액에서 생활비를 뺀 월 상환 여력에 150을 곱해요.</li>
+      <li><b>LTV 70%</b>: 종잣돈 ÷ 0.3 − 종잣돈으로 최대 대출을 구해요. 규제지역도 70%예요.</li>
+      <li><b>결과</b>: 세 값 중 가장 작은 값이 대출, 여기에 종잣돈을 더한 값이 살 수 있는 집값이에요. 대상이 아니면 디딤돌 → 보금자리론 → 일반 주담대 순으로 다음 대출을 찾아 계산해요.</li>
+    </ol>
+    <p>부대비용은 이 결과에 빠져 있어요. 6억원짜리 집이면 메인 계산기 기본값(매매가의 2%)으로 약 1,200만원을 따로 준비해야 해요. 자세한 항목은 <a href="/guide/extra-costs.html">부대비용 가이드</a>를 보세요.</p>
+  </section>
+
+  <section class="card article">
     <h2>자주 묻는 질문</h2>
     <details><summary>디딤돌대출과 함께 보면 무엇이 먼저인가요?</summary><p>혜택이 큰 순서인 신생아특례 → 디딤돌 → 보금자리론 → 일반 주담대 순으로 따져 봐요. 계산기도 같은 순서로 이용할 대출을 고릅니다.</p></details>
     <details><summary>한도 4억원이면 9억원 집도 살 수 있나요?</summary><p>매매가 상한은 9억원이지만 대출은 한도 4억원과 LTV 70% 중 작은 값까지예요. 나머지는 종잣돈으로 채워야 하므로 실제로 살 수 있는 집값은 종잣돈에 따라 달라져요.</p></details>
     <details><summary>소득은 세전인가요, 세후인가요?</summary><p>자격 판정은 부부합산 세전 연소득이에요. 월 실수령액과 생활비는 실제로 갚을 수 있는 금액을 계산하는 데만 써요.</p></details>
+    <details><summary>종잣돈이 얼마 있어야 한도 4억원을 다 쓰나요?</summary><p>LTV 70%이므로 집값의 30%를 종잣돈으로 내야 해요. 4억원을 빌리려면 종잣돈이 약 1억 7,143만원 필요하고, 이때 살 수 있는 집값은 약 5억 7,143만원이에요. 부대비용은 별도예요.</p></details>
+    <details><summary>소득이 기준을 넘으면 어떻게 되나요?</summary><p>계산기는 다음 순서인 디딤돌, 보금자리론, 일반 주담대 자격을 차례로 확인해 이용할 수 있는 대출로 다시 계산해요. 일반 주담대가 되면 규제지역 LTV가 40%로 낮아져 결과가 크게 줄 수 있어요.</p></details>
   </section>
 
   <section class="card article">
@@ -136,7 +181,7 @@
 </main>
 
 <footer class="site-footer">
-  <div class="wrap"><a href="/" style="color:inherit">계산기</a> · <a href="/guide/" style="color:inherit">가이드</a> · <a href="/privacy.html" style="color:inherit">개인정보처리방침</a></div>
+  <div class="wrap"><a href="/" style="color:inherit">계산기</a> · <a href="/guide/" style="color:inherit">가이드</a> · <a href="/about.html" style="color:inherit">소개</a> · <a href="/contact.html" style="color:inherit">문의</a> · <a href="/terms.html" style="color:inherit">이용약관</a> · <a href="/privacy.html" style="color:inherit">개인정보처리방침</a></div>
 </footer>
 <script src="/quick.js"></script>
 </body>

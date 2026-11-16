@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>서비스 소개 | 내집마련 예산 계산기</title>
+<meta name="description" content="내집마련 예산 계산기가 무엇을 계산하는지, 규제 수치를 어디서 가져와 어떻게 관리하는지, 계산의 한계는 무엇인지 소개합니다." />
+<link rel="canonical" href="https://naejip-budget.site/about.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="내집마련 예산 계산기" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:url" content="https://naejip-budget.site/about.html" />
+<meta property="og:title" content="서비스 소개 | 내집마련 예산 계산기" />
+<meta property="og:description" content="내집마련 예산 계산기가 무엇을 계산하는지, 규제 수치를 어디서 가져와 어떻게 관리하는지 소개합니다." />
+<meta property="og:image" content="https://naejip-budget.site/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" />
+<link rel="stylesheet" href="/style.css" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1677771029100125" crossorigin="anonymous"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <p class="subtitle" style="margin:0 0 6px"><a href="/" style="color:inherit">내집마련 예산 계산기</a> › 소개</p>
+    <h1>서비스 소개</h1>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card article">
+    <p class="lead">내집마련 예산 계산기는 종잣돈과 소득을 넣으면 "지금 규제에서 내가 살 수 있는 집값"을 계산하는 무료 웹 계산기입니다. 정책대출 자격, 대출 한도, LTV, DSR을 하나씩 따로 찾아보지 않아도 되도록 한 화면에 묶었습니다.</p>
+
+    <h2>왜 만들었나</h2>
+    <p>집을 알아보기 시작하면 가장 먼저 부딪히는 질문은 "얼마짜리 집을 볼 수 있나"입니다. 그런데 이 답을 내려면 여러 규칙을 동시에 맞춰 봐야 합니다. 소득으로 감당할 수 있는 원리금, 정책대출의 소득·자산 요건과 상품별 한도, 지역에 따라 다른 LTV, 집값 구간별 주택담보대출 절대한도, 스트레스 금리를 얹은 DSR까지 조건이 겹치고, 그중 가장 작은 값이 실제 한도가 됩니다.</p>
+    <p>2025년 6월과 10월 대책 이후로는 이 규칙들이 짧은 간격으로 바뀌었습니다. 은행 상담 전에 스스로 대략의 범위를 알고 가면 상담 시간도 줄고, 무리한 매물을 보러 다니는 일도 줄어듭니다. 이 계산기는 그 "대략의 범위"를 빠르고 정직하게 보여 주는 것을 목표로 합니다.</p>
+
+    <h2>무엇을 계산하나</h2>
+    <ol>
+      <li><b>종잣돈과 소득 확인</b>: 본인과 배우자의 연소득, 보유 현금, 기존 대출을 입력합니다.</li>
+      <li><b>정책대출 자격 판정</b>: 신생아특례, 디딤돌, 보금자리론의 소득·순자산 요건과 맞벌이 기준을 확인합니다.</li>
+      <li><b>소득으로 감당 가능한 대출액</b>: 월 상환 부담을 기준으로 빌릴 수 있는 금액을 계산합니다.</li>
+      <li><b>대출 상품별 한도</b>: 상품마다 정해진 최대 금액을 적용합니다.</li>
+      <li><b>지역별 LTV</b>: 규제지역과 비규제지역의 담보인정비율을 적용합니다.</li>
+      <li><b>매매가 한도</b>: 대출과 종잣돈으로 살 수 있는 집값을 역산합니다.</li>
+      <li><b>최종 예산</b>: 취득세·중개보수 같은 부대비용을 빼고 실제로 볼 수 있는 집값을 냅니다.</li>
+      <li><b>DSR 점검</b>: 스트레스 금리를 반영해 은행권 DSR 40% 안에 들어오는지 확인합니다.</li>
+    </ol>
+    <p>각 단계가 어떤 원리로 계산되는지는 <a href="/guide/budget.html">예산 계산하는 법 8단계</a>에 자세히 적어 두었습니다. 대출 하나만 빠르게 확인하고 싶다면 <a href="/calculator/didimdol.html">디딤돌대출</a>, <a href="/calculator/newborn-loan.html">신생아특례대출</a>, <a href="/calculator/mortgage-limit.html">주담대 한도</a>, <a href="/calculator/dsr.html">DSR</a> 계산기를 따로 쓸 수 있습니다.</p>
+
+    <h2>규제 수치는 어떻게 관리하나</h2>
+    <p>대출 규제 수치는 코드 곳곳에 흩어 두지 않고 <b>날짜가 붙은 규칙 묶음(룰셋)</b> 한 곳에서 관리합니다. 예를 들어 "2026년 10월 룰셋"에는 규제지역 LTV 40%, 시가 15억원 이하 주택의 주담대 한도 6억원, 수도권·규제지역 스트레스 가산금리 3.0%p 같은 값이 들어 있습니다. 새 대책이 나오면 기존 룰셋을 고치지 않고 새 날짜의 룰셋을 추가하므로, 예전 기준으로 계산하면 결과가 어떻게 달랐는지도 비교할 수 있습니다.</p>
+    <p>계산기, 정책 요약, 가이드 글에 나오는 수치는 모두 이 룰셋과 맞춰 갱신합니다. 수치의 근거는 금융위원회·국토교통부 보도자료, <a href="https://nhuf.molit.go.kr" target="_blank" rel="noopener">주택도시기금</a>과 <a href="https://www.hf.go.kr" target="_blank" rel="noopener">한국주택금융공사</a>의 상품 안내입니다. 계산 로직은 바뀔 때마다 자동 회귀 테스트로 이전 결과와 비교합니다.</p>
+
+    <h2>입력한 정보는 어디로 가나</h2>
+    <p>어디로도 가지 않습니다. 계산은 모두 이용자의 브라우저 안에서 이루어지고, 입력한 소득이나 자산은 서버로 전송되거나 저장되지 않습니다. 회원가입도 없습니다. "결과 공유"를 누르면 입력값이 링크 주소에 담기므로, 공유한 사람에게만 그 값이 보입니다. 자세한 내용은 <a href="/privacy.html">개인정보처리방침</a>에 있습니다.</p>
+
+    <h2>이 계산기가 하지 않는 것</h2>
+    <ul>
+      <li><b>대출 승인 여부를 보장하지 않습니다.</b> 실제 한도와 금리는 신용점수, 재직 형태, 담보 감정가, 금융기관 내부 기준에 따라 달라집니다.</li>
+      <li><b>특정 상품이나 매물을 추천하지 않습니다.</b> 금융상품 판매나 중개를 하지 않고, 제휴 대출 상품도 없습니다.</li>
+      <li><b>세무·법률 자문이 아닙니다.</b> 취득세나 감면 요건처럼 개인 사정에 따라 달라지는 부분은 관할 기관이나 전문가에게 확인해야 합니다.</li>
+    </ul>
+    <p>계산 결과는 은행 상담 전에 범위를 잡는 참고 자료로 써 주세요.</p>
+
+    <h2>운영</h2>
+    <p>개인 개발자가 운영하는 비영리 성격의 프로젝트이며, 서버 비용 등을 위해 페이지에 광고(Google AdSense)를 게재합니다. 광고는 계산 결과에 영향을 주지 않습니다. 계산이 이상해 보이거나 규제 수치가 바뀐 것을 발견하면 <a href="/contact.html">문의</a>로 알려 주세요. 확인되는 대로 반영합니다.</p>
+  </section>
+
+  <section class="card article">
+    <h2>바로 계산해 보기</h2>
+    <p class="lead">종잣돈과 소득만 넣으면 정책대출 자격부터 최종 예산, DSR 점검까지 한 번에 나옵니다.</p>
+    <a class="cta" href="/">예산 계산기 열기 →</a>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap"><a href="/" style="color:inherit">계산기</a> · <a href="/guide/" style="color:inherit">가이드</a> · <a href="/about.html" style="color:inherit">소개</a> · <a href="/contact.html" style="color:inherit">문의</a> · <a href="/terms.html" style="color:inherit">이용약관</a> · <a href="/privacy.html" style="color:inherit">개인정보처리방침</a></div>
+</footer>
+</body>
+</html>

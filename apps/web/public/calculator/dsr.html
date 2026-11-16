@@ -65,6 +65,22 @@
         "@type": "Answer",
         "text": "네. 마이너스통장, 자동차 할부, 카드론, 학자금 대출의 원리금이 모두 포함돼요. 기존 대출 월 상환액 칸에 합쳐서 넣으세요."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "DSR 40%를 넘으면 방법이 없나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "기존 대출을 줄이거나, 만기를 늘리거나, 대출액을 낮추는 방법이 있어요. 디딤돌·신생아특례 같은 기금 정책대출은 은행권 DSR 40% 대신 상품 기준으로 심사하니 자격이 되는지도 확인해 보세요."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "연소득은 무엇을 기준으로 넣나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "세전 연소득이에요. 근로소득자는 원천징수영수증의 총급여를 넣으면 되고, 은행은 증빙 소득 기준으로 다시 계산해요."
+      }
     }
   ]
 }
@@ -86,7 +102,7 @@
 
 <main class="wrap">
 <section class="card article">
-    <p class="updated">최종 업데이트 <time datetime="2026-10-28">2026년 10월 28일</time> · 2026년 10월 현행 규제 기준</p>
+    <p class="updated">최종 업데이트 <time datetime="2026-11-09">2026년 11월 9일</time> · 2026년 10월 현행 규제 기준</p>
     <p class="lead">DSR은 연소득 대비 모든 대출의 연간 원리금 비율이에요. 은행권 주담대는 40%를 넘을 수 없고, 계산할 때는 실제 금리에 스트레스 금리가 더해져요. 연소득과 빌리려는 금액을 넣으면 스트레스 DSR과 최대 대출 가능액을 바로 계산해요.</p>
     <form class="quick" data-quick="dsr" data-preset="{}">
       <div class="grid-2">
@@ -120,10 +136,41 @@
   </section>
 
   <section class="card article">
+    <h2>계산 예시: 지역, 기존 대출, 만기에 따라 달라지는 DSR</h2>
+    <p>모두 금리 연 4.0%, 원리금균등 상환으로 이 계산기에 넣은 결과예요.</p>
+    <div class="table-scroll"><table>
+  <thead><tr><th>조건</th><th>적용 금리</th><th>월 상환액</th><th>DSR</th><th>40%까지 최대 대출</th></tr></thead>
+  <tbody>
+    <tr><td>연소득 5,000만원, 3억원, 30년, 수도권</td><td>7.00%</td><td>약 200만원</td><td class="bad">47.9%</td><td>약 2억 5,051만원</td></tr>
+    <tr><td>같은 조건, 지방</td><td>4.75%</td><td>약 156만원</td><td class="ok">37.6%</td><td>약 3억 1,950만원</td></tr>
+    <tr><td>같은 조건, 가산금리 없이</td><td>4.00%</td><td>약 143만원</td><td class="ok">34.4%</td><td>약 3억 4,910만원</td></tr>
+    <tr><td>연소득 9,000만원, 5억원, 30년, 수도권, 기존 대출 없음</td><td>7.00%</td><td>약 333만원</td><td class="bad">44.4%</td><td>약 4억 5,092만원</td></tr>
+    <tr><td>같은 조건, 기존 대출 월 50만원</td><td>7.00%</td><td>약 383만원</td><td class="bad">51.0%</td><td>약 3억 7,577만원</td></tr>
+    <tr><td>같은 조건, 기존 대출 월 50만원, 40년</td><td>7.00%</td><td>약 361만원</td><td class="bad">48.1%</td><td>약 4억 230만원</td></tr>
+  </tbody></table></div>
+    <p><b>지역</b>: 연소득 5,000만원으로 3억원을 빌리면 실제 금리로는 DSR 34.4%라 여유가 있어요. 그런데 수도권은 가산금리 3.0%p를 더해 7.0%로 계산하므로 47.9%가 되어 통과하지 못해요. 같은 대출이 지방에서는 4.75%로 계산해 37.6%로 통과해요. 지역 하나로 최대 대출이 약 7,000만원 가까이 차이 나요.</p>
+    <p><b>기존 대출</b>: 연소득 9,000만원인 사람이 월 50만원짜리 신용대출이나 할부를 갖고 있으면, 그것만으로 수도권 주담대 최대치가 약 4억 5,092만원에서 3억 7,577만원으로 약 7,500만원 줄어요. 집을 사기 전에 작은 대출을 먼저 정리하는 게 한도를 늘리는 가장 확실한 방법이에요.</p>
+    <p><b>만기</b>: 같은 조건에서 만기를 30년에서 40년으로 늘리면 월 상환액이 줄어 최대 대출이 약 2,650만원 늘어요. 다만 총이자는 크게 늘어나니, 한도가 꼭 필요한 만큼만 늘리세요. 상환 방식에 따른 차이는 <a href="/guide/repayment.html">원리금균등·원금균등 상환 비교</a>에 정리했어요.</p>
+  </section>
+
+  <section class="card article">
+    <h2>이 계산기는 이렇게 계산해요</h2>
+    <ol>
+      <li><b>적용 금리</b>: 입력한 금리에 지역별 스트레스 가산금리(수도권·규제지역 +3.0%p, 지방 +0.75%p)를 더해요.</li>
+      <li><b>월 상환액</b>: 그 금리로 원리금균등 상환했을 때의 월 원리금을 구해요.</li>
+      <li><b>DSR</b>: (주담대 월 상환액 + 기존 대출 월 상환액) × 12 ÷ 세전 연소득이에요.</li>
+      <li><b>최대 대출</b>: 연소득의 40%를 12로 나눈 월 상환 한도에서 기존 대출 상환액을 빼고, 남은 금액으로 갚을 수 있는 대출 원금을 거꾸로 계산해요.</li>
+    </ol>
+    <p>가산금리를 모두 반영한 보수적인 계산이에요. 은행은 금리 유형과 고정 기간에 따라 가산폭을 줄여 주기도 해서 실제 한도가 더 클 수 있어요. 금리 유형별 차이는 <a href="/guide/rate-types.html">고정·변동·혼합형·주기형 금리 비교</a>를 보세요.</p>
+  </section>
+
+  <section class="card article">
     <h2>자주 묻는 질문</h2>
     <details><summary>스트레스 금리만큼 이자를 더 내나요?</summary><p>아니요. 스트레스 금리는 DSR을 계산할 때만 더하는 가상의 금리예요. 실제 이자는 약정 금리대로 내지만, 더 높은 금리로 계산한 원리금이 40% 안에 들어와야 해서 한도가 줄어요.</p></details>
     <details><summary>고정금리로 받으면 한도가 늘어나나요?</summary><p>고정금리 기간이 긴 상품일수록 가산폭이 줄어드는 구조라 실제 한도는 이 계산기의 보수적 추정보다 클 수 있어요. 정확한 값은 은행에서 확인하세요.</p></details>
     <details><summary>신용대출도 DSR에 들어가나요?</summary><p>네. 마이너스통장, 자동차 할부, 카드론, 학자금 대출의 원리금이 모두 포함돼요. 기존 대출 월 상환액 칸에 합쳐서 넣으세요.</p></details>
+    <details><summary>DSR 40%를 넘으면 방법이 없나요?</summary><p>기존 대출을 줄이거나, 만기를 늘리거나, 대출액을 낮추는 방법이 있어요. 디딤돌·신생아특례 같은 기금 정책대출은 은행권 DSR 40% 대신 상품 기준으로 심사하니 자격이 되는지도 확인해 보세요.</p></details>
+    <details><summary>연소득은 무엇을 기준으로 넣나요?</summary><p>세전 연소득이에요. 근로소득자는 원천징수영수증의 총급여를 넣으면 되고, 은행은 증빙 소득 기준으로 다시 계산해요.</p></details>
   </section>
 
   <section class="card article">
@@ -138,7 +185,7 @@
 </main>
 
 <footer class="site-footer">
-  <div class="wrap"><a href="/" style="color:inherit">계산기</a> · <a href="/guide/" style="color:inherit">가이드</a> · <a href="/privacy.html" style="color:inherit">개인정보처리방침</a></div>
+  <div class="wrap"><a href="/" style="color:inherit">계산기</a> · <a href="/guide/" style="color:inherit">가이드</a> · <a href="/about.html" style="color:inherit">소개</a> · <a href="/contact.html" style="color:inherit">문의</a> · <a href="/terms.html" style="color:inherit">이용약관</a> · <a href="/privacy.html" style="color:inherit">개인정보처리방침</a></div>
 </footer>
 <script src="/quick.js"></script>
 </body>
