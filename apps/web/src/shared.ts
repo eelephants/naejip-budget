@@ -3,7 +3,7 @@
 import { comma, fmt, parseMan } from "@naejip/core";
 import type { RulesetId } from "@naejip/core";
 
-export const ACTIVE_RULESET: RulesetId = "2026-10"; // 규제 변경 시 코어에 새 룰셋 추가 후 이 키만 교체
+export const ACTIVE_RULESET: RulesetId = "2026-11"; // 규제 변경 시 코어에 새 룰셋 추가 후 이 키만 교체
 
 /* ---------- money input formatting ---------- */
 export function attachMoneyInputs(scope: ParentNode = document): void {

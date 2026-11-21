@@ -1722,5 +1722,285 @@
    }
   },
   "stressOn": true
+ },
+ "14-nov-didim-marriage-penalty": {
+  "ruleset": "2026-11",
+  "seed": 190000000,
+  "gross": 120000000,
+  "net": 100000000,
+  "netWorth": 190000000,
+  "houses": 0,
+  "firstTime": false,
+  "newlywed": true,
+  "children": 0,
+  "bornAfter23": false,
+  "netWorthOK": true,
+  "newbornOK": false,
+  "didimOK": true,
+  "bogeumOK": true,
+  "loanType": "didim",
+  "isPolicy": true,
+  "monthlyNet": 8333333.333333333,
+  "living": 2000000,
+  "pay": 6333333.333333333,
+  "months": 360,
+  "affordable": 1326587856.209902,
+  "conservative": 950000000,
+  "didimLimit": 320000000,
+  "bogeumStandalone": 360000000,
+  "bogeumExtra": 40000000,
+  "amtNewborn": 0,
+  "amtDidim": 320000000,
+  "amtDidimExtra": 40000000,
+  "amtBogeum": 0,
+  "amtGeneral": 950000000,
+  "priceCap": 600000000,
+  "s5": {
+   "reg": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": {
+     "d": 320000000,
+     "e": 40000000
+    }
+   },
+   "non": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": {
+     "d": 320000000,
+     "e": 40000000
+    }
+   }
+  },
+  "s6": {
+   "reg": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": {
+     "d": 320000000,
+     "e": 40000000
+    },
+    "budgetBefore": 550000000,
+    "loanWithCap": 360000000,
+    "budgetCap": 550000000,
+    "effLtv": 0.6545454545454545
+   },
+   "non": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": {
+     "d": 320000000,
+     "e": 40000000
+    },
+    "budgetBefore": 550000000,
+    "loanWithCap": 360000000,
+    "budgetCap": 550000000,
+    "effLtv": 0.6545454545454545
+   }
+  },
+  "s8": {
+   "reg": {
+    "price": 550000000,
+    "loan": 360000000,
+    "appliedType": "didim",
+    "ltvUsed": 0.7,
+    "cost": 11000000,
+    "availSeed": 179000000,
+    "budget": 539000000,
+    "ok": false,
+    "shortfall": 11000000,
+    "policyExceeded": false
+   },
+   "non": {
+    "price": 550000000,
+    "loan": 360000000,
+    "appliedType": "didim",
+    "ltvUsed": 0.7,
+    "cost": 11000000,
+    "availSeed": 179000000,
+    "budget": 539000000,
+    "ok": false,
+    "shortfall": 11000000,
+    "policyExceeded": false
+   }
+  },
+  "dsr": {
+   "reg": {
+    "price": 550000000,
+    "loan": 360000000,
+    "appliedType": "didim",
+    "mPmt": 2517172.2307899958,
+    "credit": 11000000,
+    "cPmt": 238333.33333333334,
+    "existing": 0,
+    "rate": 7.5,
+    "creditRate": 6,
+    "tot": 2755505.5641233292,
+    "monthlyGross": 10000000,
+    "ratio": 0.27555055641233295,
+    "pass": true
+   },
+   "non": {
+    "price": 550000000,
+    "loan": 360000000,
+    "appliedType": "didim",
+    "mPmt": 2517172.2307899958,
+    "credit": 11000000,
+    "cPmt": 238333.33333333334,
+    "existing": 0,
+    "rate": 7.5,
+    "creditRate": 6,
+    "tot": 2755505.5641233292,
+    "monthlyGross": 10000000,
+    "ratio": 0.27555055641233295,
+    "pass": true
+   }
+  },
+  "stressOn": true
+ },
+ "15-nov-same-profile": {
+  "ruleset": "2026-11",
+  "seed": 190000000,
+  "gross": 84450000,
+  "net": 74880000,
+  "netWorth": 190000000,
+  "houses": 0,
+  "firstTime": true,
+  "newlywed": true,
+  "children": 0,
+  "bornAfter23": false,
+  "netWorthOK": true,
+  "newbornOK": false,
+  "didimOK": true,
+  "bogeumOK": true,
+  "loanType": "didim",
+  "isPolicy": true,
+  "monthlyNet": 6240000,
+  "living": 2000000,
+  "pay": 4240000,
+  "months": 360,
+  "affordable": 888115659.525787,
+  "conservative": 636000000,
+  "didimLimit": 320000000,
+  "bogeumStandalone": 360000000,
+  "bogeumExtra": 40000000,
+  "amtNewborn": 0,
+  "amtDidim": 320000000,
+  "amtDidimExtra": 40000000,
+  "amtBogeum": 0,
+  "amtGeneral": 636000000,
+  "priceCap": 600000000,
+  "s5": {
+   "reg": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": {
+     "d": 320000000,
+     "e": 40000000
+    }
+   },
+   "non": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": {
+     "d": 320000000,
+     "e": 40000000
+    }
+   }
+  },
+  "s6": {
+   "reg": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": {
+     "d": 320000000,
+     "e": 40000000
+    },
+    "budgetBefore": 550000000,
+    "loanWithCap": 360000000,
+    "budgetCap": 550000000,
+    "effLtv": 0.6545454545454545
+   },
+   "non": {
+    "ltv": 0.7,
+    "ltvCap": 443333333.33333325,
+    "amt": 360000000,
+    "parts": {
+     "d": 320000000,
+     "e": 40000000
+    },
+    "budgetBefore": 550000000,
+    "loanWithCap": 360000000,
+    "budgetCap": 550000000,
+    "effLtv": 0.6545454545454545
+   }
+  },
+  "s8": {
+   "reg": {
+    "price": 1000000000,
+    "loan": 400000000,
+    "appliedType": "general",
+    "ltvUsed": 0.4,
+    "cost": 18000000,
+    "availSeed": 172000000,
+    "budget": 572000000,
+    "ok": false,
+    "shortfall": 428000000,
+    "policyExceeded": true
+   },
+   "non": {
+    "price": 1000000000,
+    "loan": 508800000,
+    "appliedType": "general",
+    "ltvUsed": 0.7,
+    "cost": 18000000,
+    "availSeed": 172000000,
+    "budget": 680800000,
+    "ok": false,
+    "shortfall": 319200000,
+    "policyExceeded": true
+   }
+  },
+  "dsr": {
+   "reg": {
+    "price": 1000000000,
+    "loan": 400000000,
+    "appliedType": "general",
+    "mPmt": 2796858.034211106,
+    "credit": 428000000,
+    "cPmt": 9808333.333333334,
+    "existing": 0,
+    "rate": 7.5,
+    "creditRate": 7.5,
+    "tot": 12605191.36754444,
+    "monthlyGross": 7037500,
+    "ratio": 1.7911461978748762,
+    "pass": false
+   },
+   "non": {
+    "price": 1000000000,
+    "loan": 508800000,
+    "appliedType": "general",
+    "mPmt": 3557603.4195165266,
+    "credit": 319200000,
+    "cPmt": 7315000,
+    "existing": 0,
+    "rate": 7.5,
+    "creditRate": 7.5,
+    "tot": 10872603.419516526,
+    "monthlyGross": 7037500,
+    "ratio": 1.5449525285281032,
+    "pass": false
+   }
+  },
+  "stressOn": true
  }
 }

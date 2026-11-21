@@ -89,4 +89,10 @@ export const CASES: Case[] = [
     ruleset: "2026-10",
     input: { ...base, newlywed: false, firstTime: false, isMetro: false, gross: 1.5 * EOK, net: 1.2 * EOK, seed: 3 * EOK, netWorth: 3 * EOK, priceReg: 15 * EOK, priceNon: 9 * EOK },
   },
+  {
+    id: "14-nov-didim-marriage-penalty",
+    ruleset: "2026-11",
+    input: { ...base, firstTime: false, gross: 1.2 * EOK, grossLower: 5500 * MAN, net: 1.0 * EOK, priceReg: 5.5 * EOK, priceNon: 5.5 * EOK },
+  },
+  { id: "15-nov-same-profile", ruleset: "2026-11", input: { ...base } },
 ];

@@ -183,6 +183,23 @@ test("P8: 2026-10 보금자리론 결혼페널티 완화 (신혼 맞벌이 1인 
   assert.equal(computeBudget({ ...base, grossLower: 5000 * MAN }, RULESETS["2026-08"]).bogeumOK, false, "이전 룰셋은 미적용");
 });
 
+test("P10: 2026-11 디딤돌 결혼페널티 완화 (신혼 맞벌이 신청인 1인 6,000만원 경계)", () => {
+  const base: BudgetInput = {
+    seed: 2 * EOK, gross: 1.2 * EOK, net: 1.0 * EOK, netWorth: 2 * EOK, houses: 0,
+    firstTime: false, newlywed: true, children: 0, bornAfter23: false,
+    living: 200 * MAN, loanRate: 4, loanYears: 30, isMetro: true,
+    priceReg: 5.5 * EOK, priceNon: 5.5 * EOK, costRate: 2,
+    dsrRate: 4.5, dsrYears: 30, creditRate: 6, useStress: true, existingDebtMonthly: 0,
+  };
+  const R = RULESETS["2026-11"];
+  assert.equal(computeBudget({ ...base, grossLower: 6000 * MAN }, R).loanType, "didim");
+  assert.equal(computeBudget({ ...base, grossLower: 6000 * MAN + 1 }, R).didimOK, false);
+  assert.equal(computeBudget({ ...base, grossLower: 6000 * MAN, newlywed: false }, R).didimOK, false);
+  assert.equal(computeBudget({ ...base }, R).didimOK, false, "grossLower 생략(외벌이) → 합산 기준");
+  assert.equal(computeBudget({ ...base, grossLower: 6000 * MAN, netWorth: 5.2 * EOK }, R).didimOK, false, "순자산 요건 유지");
+  assert.equal(computeBudget({ ...base, grossLower: 5000 * MAN }, RULESETS["2026-10"]).didimOK, false, "이전 룰셋은 미적용");
+});
+
 test("P9: 2026-10 스트레스 DSR — 수도권·규제 3.0 / 지방 0.75 / 신용 1억 초과만 1.5", () => {
   const R = RULESETS["2026-10"];
   const base: BudgetInput = {

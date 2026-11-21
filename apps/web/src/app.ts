@@ -101,7 +101,7 @@ function render(): void {
         <tr><td>신생아특례대출</td><td style="text-align:left;white-space:normal">
           무주택(또는 1주택 대환) · '23.1.1 이후 출생아 가구 · 부부합산 소득 1.3억 이하(맞벌이 한시 완화 시 2억 수준) · 순자산 ${fmt(R.netWorthCap)} 이하 · 주택가격 9억 이하 · 한도 ${fmt(R.newbornLimit)}</td></tr>
         <tr><td>디딤돌대출</td><td style="text-align:left;white-space:normal">
-          무주택 · 부부합산 소득 6천 이하(생애최초·2자녀 이상 7천, 신혼 8.5천 이하) · 순자산 ${fmt(R.netWorthCap)} 이하 · 매매가 5억(신혼·2자녀 6억) 이하 · 한도 일반 ${fmt(R.didimLimit.base)} / 생초 ${fmt(R.didimLimit.first)} / 신혼·2자녀 ${fmt(R.didimLimit.multi)}</td></tr>
+          무주택 · 부부합산 소득 6천 이하(생애최초·2자녀 이상 7천, 신혼 8.5천 이하${R.didimSpouseMax ? ` — 신혼 맞벌이는 초과해도 신청인 1인 ${fmt(R.didimSpouseMax)} 이하면 가능` : ""}) · 순자산 ${fmt(R.netWorthCap)} 이하 · 매매가 5억(신혼·2자녀 6억) 이하 · 한도 일반 ${fmt(R.didimLimit.base)} / 생초 ${fmt(R.didimLimit.first)} / 신혼·2자녀 ${fmt(R.didimLimit.multi)}</td></tr>
         <tr><td>기존보금자리론</td><td style="text-align:left;white-space:normal">
           무주택(또는 처분조건 1주택) · 소득 7천 이하(1자녀 8천, 2자녀 9천, 3자녀 1억, 신혼 8.5천${R.bogeumSpouseMax ? ` — 신혼 맞벌이는 초과해도 부부 중 1인 ${fmt(R.bogeumSpouseMax)} 이하면 가능` : ""}) · 매매가 6억 이하 · 한도 3.6억(3자녀 이상 4억)</td></tr>
       </tbody>

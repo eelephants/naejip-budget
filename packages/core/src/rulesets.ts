@@ -9,7 +9,7 @@ export const EOK = 100_000_000;
 /** 규제지역 / 비규제지역 두 시나리오 키 */
 export type RegionKey = "reg" | "non";
 
-export type RulesetId = "2024-07" | "2026-08" | "2026-10";
+export type RulesetId = "2024-07" | "2026-08" | "2026-10" | "2026-11";
 
 export interface Ruleset {
   id: RulesetId;
@@ -32,6 +32,8 @@ export interface Ruleset {
   stress: { metro: number; local: number; credit: number; creditMin: number };
   /** 보금자리론 신혼 맞벌이 결혼페널티 완화: 합산 기준 초과여도 부부 중 1인 소득이 이 값 이하면 가능. 없던 시점은 null */
   bogeumSpouseMax: number | null;
+  /** 디딤돌 신혼 맞벌이 결혼페널티 완화: 합산 기준 초과여도 신청인 1인 소득이 이 값 이하면 가능. 없던 시점은 null */
+  didimSpouseMax: number | null;
   /** 의무 적용 여부 (해제는 미적용 시와의 비교용) */
   stressForced: boolean;
 }
@@ -51,6 +53,7 @@ export const RULESETS: Record<RulesetId, Ruleset> = {
     capByPrice: null, // 시가별 절대한도 없음
     stress: { metro: 0, local: 0, credit: 0, creditMin: 0 },
     bogeumSpouseMax: null,
+    didimSpouseMax: null,
     stressForced: false,
   },
 
@@ -68,6 +71,7 @@ export const RULESETS: Record<RulesetId, Ruleset> = {
     capByPrice: (p) => (p <= 15 * EOK ? 6 * EOK : p <= 25 * EOK ? 4 * EOK : 2 * EOK),
     stress: { metro: 1.5, local: 1.5, credit: 1.5, creditMin: 0 }, // 당시 계산기 기준: 일괄 +1.5%p
     bogeumSpouseMax: null,
+    didimSpouseMax: null,
     stressForced: true,
   },
 
@@ -88,6 +92,31 @@ export const RULESETS: Record<RulesetId, Ruleset> = {
     capByPrice: (p) => (p <= 15 * EOK ? 6 * EOK : p <= 25 * EOK ? 4 * EOK : 2 * EOK),
     stress: { metro: 3.0, local: 0.75, credit: 1.5, creditMin: 1 * EOK },
     bogeumSpouseMax: 0.7 * EOK,
+    didimSpouseMax: null,
+    stressForced: true,
+  },
+
+  /* 현행 규제 (2026.11 기준) — 2026-10 대비 변경분
+   * - 디딤돌·버팀목 신혼 맞벌이 결혼페널티 완화: 신혼가구(혼인신고 7년 이내 또는 결혼 예정일이 접수일로부터 3개월 이내)는
+   *   기존 신혼 기준(디딤돌 부부합산 8.5천만원)을 초과해도 신청인 1인 연소득이 6천만원 이하이면 신청 가능
+   *   (신청인은 매매계약 매수인, 순자산·금리는 부부합산 기준)
+   * - 근거: 주택도시기금 공지 "기금대출 신혼부부 소득요건 합리화 관련 안내"(2026.10.16)
+   *   https://nhuf.molit.go.kr/FP/FP08/FP0804/FP080402.jsp?id=3&mode=S&articleId=1316
+   * - 시행일: 2026.10.19 */
+  "2026-11": {
+    id: "2026-11",
+    name: "현행 규제 반영 (2026.11)",
+    newbornIncomeMax: 2.0 * EOK,
+    newbornLimit: 4 * EOK,
+    didimLimit: { multi: 3.2 * EOK, first: 2.4 * EOK, base: 2 * EOK },
+    netWorthCap: 5.11 * EOK,
+    policyLtv: { reg: 0.7, non: 0.7 },
+    generalLtv: { reg: 0.4, non: 0.7 },
+    multiHouseLtv: { reg: 0, non: 0.6, metroNon: 0 },
+    capByPrice: (p) => (p <= 15 * EOK ? 6 * EOK : p <= 25 * EOK ? 4 * EOK : 2 * EOK),
+    stress: { metro: 3.0, local: 0.75, credit: 1.5, creditMin: 1 * EOK },
+    bogeumSpouseMax: 0.7 * EOK,
+    didimSpouseMax: 0.6 * EOK,
     stressForced: true,
   },
 };

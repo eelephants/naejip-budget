@@ -188,7 +188,8 @@ export function computeBudget(input: BudgetInput, R: Ruleset): BudgetResult {
     netWorthOK &&
     (gross <= 0.6 * EOK ||
       (gross <= 0.7 * EOK && (input.firstTime || input.children >= 2)) ||
-      (gross <= 0.85 * EOK && input.newlywed));
+      (gross <= 0.85 * EOK && input.newlywed) ||
+      (input.newlywed && R.didimSpouseMax !== null && (input.grossLower ?? gross) <= R.didimSpouseMax));
   const bogeumOK =
     noHouse &&
     (gross <= 0.7 * EOK ||

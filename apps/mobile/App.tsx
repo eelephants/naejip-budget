@@ -22,7 +22,7 @@ import {
 import type { BudgetResult, FormState, RegionKey, RulesetId } from "@naejip/core";
 import { Badge, C, Card, Check, MoneyField, NumField, Row, YesNo } from "./src/ui";
 
-const ACTIVE_RULESET: RulesetId = "2026-10"; // 규제 변경 시 코어에 새 룰셋 추가 후 이 키만 교체
+const ACTIVE_RULESET: RulesetId = "2026-11"; // 규제 변경 시 코어에 새 룰셋 추가 후 이 키만 교체
 
 const REGIONS: readonly RegionKey[] = ["reg", "non"];
 
